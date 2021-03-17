@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.SpringBoot.mapper.MenuMapper">
+
+	<sql id="selectById">
+		from sys_menu m
+		join sys_role_menu rm on rm.mid = m.id
+		join sys_role r on r.id = rm.rid
+		join sys_user_role ur on ur.rid = r.id
+		join sys_user u on u.id = ur.uid
+	</sql>
+
+    <select id="selectPerCodesByUserId" resultType="java.lang.String">
+		select m.per_code from sys_menu m
+		join sys_role_menu rm on rm.mid = m.id
+		join sys_role r on r.id = rm.rid
+		join sys_user_role ur on ur.rid = r.id
+		join sys_user u on u.id = ur.uid
+		where u.id = #{id} and m.delete_flag = 0
+	</select>
+	<select id="getRoleHasMenus" resultType="com.SpringBoot.bean.Menu">
+		select m.id ,m.pid ,m.title, m.url from sys_menu m
+		join sys_role_menu rm on rm.mid = m.id
+		join sys_role r on r.id = rm.rid
+		where r.id = #{id} and m.delete_flag = 0
+	</select>
+	<select id="getUserHasMenus" resultType="com.SpringBoot.bean.Menu">
+		select m.id ,m.pid ,m.title, `url` from sys_menu m
+		join sys_role_menu rm on rm.mid = m.id
+		join sys_role r on r.id = rm.rid
+		join sys_user_role ur on ur.rid = r.id
+		join sys_user u on u.id = ur.uid
+		<where>
+			u.id = #{id} and m.delete_flag = 0
+		</where>
+	</select>
+    <select id="selectRolesByUid" resultType="java.lang.String">
+		select r.* from sys_role r join sys_user_role ur on ur.rid = r.id where ur.uid = #{id}
+	</select>
+
+    <insert id="insertAndGetId" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		insert  into sys_menu (`pid`, `title`, `type`, per_code, icon, url, target, order_num, create_time, visible, delete_flag)
+		values (#{menu.pid}, #{menu.title}, #{menu.type}
+		<if test="menu.perCode != null || menu.perCode != ''">
+			, #{menu.perCode}
+		</if>
+		<if test="menu.icon != null || menu.icon != ''">
+			, #{menu.icon}
+		</if>
+		<if test="menu.url != null || menu.url != ''">
+			, #{menu.url}
+		</if>
+		<if test="menu.target != null || menu.target != ''">
+			, #{menu.target}
+		</if>
+		<if test="menu.orderNum != null || menu.orderNum != ''">
+			, #{menu.orderNum}
+		</if>
+		, #{menu.createTime}, #{menu.visible}, #{menu.deleteFlag})
+	</insert>
+</mapper>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="icon" th:href="@{/resources/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/resources/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/resources/css/public.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/resources/layui_ext/dtree/dtree.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/resources/layui_ext/dtree/font/dtreefont.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/resources/layui_ext/dtree/font/dtreefont.css}" media="all"/>
+</head>
+<body>
+<input id="roleId" th:value="${roleId}" hidden>
+<form action="" method="post" id="searchFrm" lay-filter="searchFrm" class="layui-form">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">用户名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" id="name" class="layui-input input-radius"
+                       placeholder="请输入用户名称">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button type="button" class="layui-btn layui-btn-sm layui-btn-radius" lay-submit=""
+                    lay-filter="doSearch"><i
+                    class="layui-icon layui-icon-search layui-icon-normal"></i>查询
+            </button>
+            <button type="reset" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-warm"><i
+                    class="layui-icon layui-icon-refresh"></i><span>重置</span>
+            </button>
+        </div>
+    </div>
+</form>
+<!--数据表格-->
+<div>
+    <table class="layui-hide" id="userTable" lay-filter="userTable"></table>
+</div>
+</body>
+<script th:src="@{/resources/js/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/resources/layui/layui.js}"></script>
+<script>
+    var roleId = $("#roleId").val();
+    var deptTree;
+    layui.extend({
+        dtree: '/resources/layui_ext/dtree/dtree'   // {/}的意思即代表采用自有路径，即不跟随 base 路径
+    }).use(['dtree', 'layer', 'jquery', 'table', 'form'], function () {
+        var dtree = layui.dtree, layer = layui.layer, $ = layui.jquery;
+        var table = layui.table;
+        var form = layui.form;
+
+        //初始化表格
+        var tableInsD = table.render({
+            elem: "#userTable",
+            id: 'userTable',
+            title: "用户数据表格",
+            url: "/role/selectUsersNotThisRole/" + roleId,
+            toolbar: "#userToolBar",
+            page: true,
+            limit: 5,
+            request: {
+                pageName: 'pageNum',
+                limitName: 'pageSize'
+            },
+            height: "full-60",
+            cols: [ [
+                {id: 'flag', type: 'checkbox'},
+                {field: 'name', title: '用户名称', align: 'center'},
+                {field: 'address', title: '地址', align: 'center'},
+                {
+                    field: 'sex', title: '性别', align: 'center', templet: function (d) {
+                        return d.sex == 1 ? '<font color="blue">男</font>' : '<font color="red">女</font>';
+                    }
+                },
+                {
+                    field: 'available', title: '是否可用', align: 'center', templet: function (d) {
+                        return d.available == 1 ? '<font color="blue">可用</font>' : '<font color="red">不可用</font>';
+                    }
+                }
+            ] ],
+            done: function (data, curr, count) {
+                //不是第一页时，如果当前返回的数据为0那么就返回上一页
+                if (data.data.length == 0 && curr != 1) {
+                    tableInsD.reload({
+                        page: {
+                            curr: curr - 1
+                        }
+                    })
+                }
+            }
+        });
+
+        //点击重置按钮时，重置表单的值
+        $("#resetRole").click(function () {
+            $("#searchFrm")[0].reset();
+        });
+
+        //监控模糊查询按钮事件
+        form.on("submit(doSearch)", function (data) {
+            var params = $("#searchFrm").serialize();
+            tableInsD.reload({
+                url:"/role/selectUsersNotThisRole/" + roleId,
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+
+    });
+    function getUsers() {
+        var selectData = layui.table.checkStatus('userTable').data;
+        return selectData;
+    }
+</script>
+</html>

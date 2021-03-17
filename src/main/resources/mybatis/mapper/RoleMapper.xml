@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.SpringBoot.mapper.RoleMapper">
+
+	<select id="selectUsersNotThisRole" resultType="com.SpringBoot.bean.User">
+		select DISTINCT * from sys_user u
+		<where>
+			u.id not in (select DISTINCT uid from sys_user_role where rid = #{roleId})
+		</where>
+	</select>
+
+	<insert id="batchInsertRoleMenu" parameterType="list">
+		insert into sys_role_menu(rid, mid) values
+		<foreach item="item" index="index" collection="list" separator=",">
+			( #{item.rid}, #{item.mid} )
+		</foreach>
+	</insert>
+
+    <delete id="deleteRoleAndMenuByRoleId">
+		delete from sys_role_menu rm
+		<where>
+			rm.rid = #{id}
+		</where>
+	</delete>
+
+    <delete id="deleteRolesUser">
+		delete from sys_user_role ur where ur.uid = #{userId} and ur.rid = #{roleId}
+	</delete>
+
+</mapper>

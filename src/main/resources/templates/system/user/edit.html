@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>修改用户</title>
+    <link rel="icon" href="../resources/favicon.ico">
+    <link rel="stylesheet" href="../resources/layui/css/layui.css" th:href="@{/resources/layui/css/layui.css}"
+          media="all"/>
+    <link rel="stylesheet" href="../resources/css/public.css" th:href="@{/resources/css/public.css}" media="all"/>
+    <link rel="stylesheet" href="../resources/layui_ext/dtree/dtree.css"
+          th:href="@{/resources/layui_ext/dtree/dtree.css}" media="all"/>
+    <link rel="stylesheet" href="../resources/layui_ext/dtree/font/dtreefont.css"
+          th:href="@{/resources/layui_ext/dtree/font/dtreefont.css}" media="all"/>
+    <script type="text/javascript" src="../resources/layui/layui.js" th:href="@{/resources/layui/layui.js}"></script>
+</head>
+<body>
+<!--添加和修改弹出层-->
+<div id="addOrUpdateDiv" style="padding: 10px;padding-right: 5%">
+    <form action="" method="post" class="layui-form" id="dataFrm" lay-filter="dataFrm">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">所属部门</label>
+                <div class="layui-input-block">
+                    <input type="hidden" id="id" name="id" th:value="${user.id}">
+                    <input type="hidden" name="deptId" id="deptId" th:value="${user.deptId}">
+                    <ul id="deptTree" class="dtree" data-id="0"></ul>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">领导部门</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="pId" id="pId">
+                    <input type="text" name="pName" th:id="pName" class="layui-input input-radius layui-disabled"
+                           readonly>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">账户类型</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="type" value="0" title="超级管理员"
+                           th:checked="${user.type} == 0 ? true: false">
+                    <input type="radio" name="type" value="1" title="普通管理员"
+                           th:checked="${user.type} == 1 ? true: false">
+                    <input type="radio" name="type" value="2" title="普通用户" th:checked="${user.type} == 2 ? true: false">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" id="username" th:value="${user.name}" lay-verify="required"
+                           autocomplete="off"
+                           class="layui-input input-radius" placeholder="请输入用户名称">
+                </div>
+            </div>
+            <div class="layui-inline" style="padding-left: 4%">
+                <label class="layui-form-label">登陆名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="loginName" id="loginName" th:value="${user.loginName}"
+                           lay-verify="required" autocomplete="off"
+                           class="layui-input input-radius" placeholder="请输入登陆名称">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户地址</label>
+                <div class="layui-input-block">
+                    <input type="text" name="address" id="address" th:value="${user.address}"
+                           class="layui-input input-radius" placeholder="请输入用户地址">
+                </div>
+            </div>
+            <div class="layui-inline" style="padding-left: 4%">
+                <label class="layui-form-label">排序码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="orderNum" id="orderNum" th:value="${user.orderNum}"
+                           lay-verify="required|number" autocomplete="off"
+                           class="layui-input input-radius" placeholder="请输入排序码">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户备注</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入用户备注" class="layui-textarea" th:text="${user.remark}" name="remark"
+                              cols="200"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户性别</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="sex" value="1" title="男" th:checked="${user.sex} == 1?true:false">
+                    <input type="radio" name="sex" value="0" title="女" th:checked="${user.sex} == 0?true:false">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">是否可用</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="available" value="1" title="可用"
+                           th:checked="${user.available} == 1?true:false">
+                    <input type="radio" name="available" value="0" title="不可用"
+                           th:checked="${user.available} == 0?true:false">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="text-align: center;padding-right: 7%">
+                <button type="button" class="layui-btn layui-btn-radius" lay-submit="" lay-filter="doSubmit"
+                        id="doSubmit"><i
+                        class="layui-icon layui-icon-search layui-icon-normal"></i>提交
+                </button>
+                <button type="reset" onclick="javascript:document.getElementById('deptid').value=''"
+                        class="layui-btn layui-btn-radius layui-btn-warm"><i
+                        class="layui-icon layui-icon-refresh"></i><span>重置</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script type="text/javascript" th:src="@{/resources/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/resources/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/resources/ztree/js/jquery.ztree.all.js}"></script>
+<script type="text/javascript">
+
+    layui.extend({
+        dtree: '/resources/layui_ext/dtree/dtree'
+    }).use(['jquery', 'form', 'layer', 'laydate', 'table', 'layedit', 'dtree', 'laydate'], function () {
+        var dtree = layui.dtree;
+        var $ = layui.jquery;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var Did = $("#deptId").val();
+
+        laydate.render({
+            elem: "#hireDate",
+            format: "yyyy-MM-dd HH:mm:ss",
+            min: -30, //7天前
+            max: 30, //7天后
+        });
+
+        //初始化添加弹出层所属部门的下拉列表
+        var deptTree = dtree.renderSelect({
+            elem: "#deptTree",
+            width: "100%", // 可以在这里指定树的宽度来填满div
+            dataStyle: "layuiStyle", //使用layui风格的数据格式
+            dataFormat: "list",     //配置data的风格为list
+            response: {message: "msg", statusCode: 0, title: "name"},  //修改response中返回数据的定义
+            selectInitVal: Did,
+            url: "/dept/loadDeptManagerLeftTreeJson", // 使用url加载（可与data加载同时存在）
+            success: function (res, $ul, first) {
+                res.data.forEach(function (dept, index) {
+                    if (dept.id == Did){
+                        $.post("/dept/getFatherById", {id: dept.parentId}, function (result) {
+                            $("#pId").val(result.id);
+                            $("#pName").val(result.name);
+                        })
+                    }
+                });
+            }
+        });
+
+        //监听所属部门点击方法
+        dtree.on("node(deptTree)", function (obj) {
+            //将该部门的id赋值给隐藏域，
+            $("#deptId").val(obj.param.nodeId);
+            // 根据部门id查询上级部门
+            var id = obj.param.parentId;
+            $.post("/dept/getFatherById", {id: id}, function (result) {
+                $("#pId").val(result.id);
+                $("#pName").val(result.name);
+            })
+        });
+
+        form.on("submit(doSubmit)", function (data) {
+            $.post("/user/updateUser", data.field, function (res) {
+                if (res.code == 200) {
+                    window.parent.tableIns.reload();
+                }
+                var index = parent.layer.getFrameIndex(window.name)
+                layer.msg(res.msg);
+                parent.layer.close(index);
+            });
+            return false;
+        });
+
+    });
+
+</script>
+</html>
