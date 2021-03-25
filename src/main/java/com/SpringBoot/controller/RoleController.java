@@ -4,6 +4,7 @@ import com.SpringBoot.bean.User;
 import com.SpringBoot.service.RoleService;
 import com.SpringBoot.service.impl.RoleServiceImpl;
 import com.SpringBoot.vo.RoleVo;
+import com.SpringBoot.vo.UserVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,12 +124,12 @@ public class RoleController {
 	 * 角色id分页查询用户集合
 	 */
 	@RequiresPermissions(value = "sys:role:select")
-	@GetMapping("/selectGiveUserRole/{id}")
+	@PostMapping("/selectGiveUserRole")
 	@ResponseBody
-	public LayuiJson<User>  toGiveUserRoleIndex(@PathVariable("id") Long id){
+	public LayuiJson<User>  toGiveUserRoleIndex(RoleVo vo){
 
 		// 查询已有此角色的用户
-		IPage<User> page = roleService.selectUserByRoleId(id);
+		IPage<User> page = roleService.selectUserByRoleId(vo);
 
 		LayuiJson<User> layuiJson = new LayuiJson<>();
 		layuiJson.setData(page.getRecords());
@@ -175,16 +176,14 @@ public class RoleController {
 
 	/**
 	 * 查询未拥有此角色用户列表
-	 * @param roleId
+	 * @param vo
 	 * @return
 	 */
 	@RequiresPermissions(value = "sys:user:select")
-	@GetMapping("selectUsersNotThisRole/{roleId}")
+	@PostMapping("selectUsersNotThisRole")
 	@ResponseBody
-	public LayuiJson<User> selectUsersNotThisRole(@PathVariable("roleId") Long roleId,
-												  @RequestParam("pageNum") Long pageNum,
-												  @RequestParam("pageSize") Long pageSize) {
-		IPage<User> page = roleService.selectUsersNotThisRole(roleId, pageNum, pageSize);
+	public LayuiJson<User> selectUsersNotThisRole(RoleVo vo) {
+		IPage<User> page = roleService.selectUsersNotThisRole(vo);
 		LayuiJson<User> layuiJson = new LayuiJson<>();
 		layuiJson.setData(page.getRecords());
 		layuiJson.setCount(page.getTotal());

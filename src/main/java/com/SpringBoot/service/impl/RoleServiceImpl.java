@@ -79,14 +79,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
 	/**
 	 * 角色id查询用户
-	 * @param id
+	 * @param vo
 	 * @return
 	 */
 	@Override
-	public IPage<User> selectUserByRoleId(Long id) {
-		Role role = new Role();
-		role.setId(id);
-		IPage<User> roleIPage = userMapper.selectUserByRoleId(new Page<User>(1,10), role);
+	public IPage<User> selectUserByRoleId(RoleVo vo) {
+		IPage<User> roleIPage = userMapper.selectUserByRoleId(new Page<User>(vo.getPageNum(),vo.getPageSize()), vo);
 		return roleIPage;
 	}
 
@@ -110,8 +108,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 	 * @return
 	 */
 	@Override
-	public IPage<User> selectUsersNotThisRole(Long roleId, Long pageNum, Long pageSize) {
-		return roleMapper.selectUsersNotThisRole(new Page<User>(pageNum, pageSize), roleId);
+	public IPage<User> selectUsersNotThisRole(RoleVo vo) {
+		return roleMapper.selectUsersNotThisRole(new Page<User>(vo.getPageNum(), vo.getPageSize()), vo);
 	}
 
 	/**

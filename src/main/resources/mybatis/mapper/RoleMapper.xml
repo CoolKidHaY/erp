@@ -8,7 +8,10 @@
 	<select id="selectUsersNotThisRole" resultType="com.SpringBoot.bean.User">
 		select DISTINCT * from sys_user u
 		<where>
-			u.id not in (select DISTINCT uid from sys_user_role where rid = #{roleId})
+			u.id not in (select DISTINCT uid from sys_user_role where rid = #{vo.id})
+			<if test="vo.name != null and vo.name != ''">
+				and name like '%${vo.name}%'
+			</if>
 		</where>
 	</select>
 

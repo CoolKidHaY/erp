@@ -3,6 +3,7 @@ package com.SpringBoot.mapper;
 import com.SpringBoot.bean.Role;
 import com.SpringBoot.bean.RoleMenu;
 import com.SpringBoot.bean.User;
+import com.SpringBoot.vo.RoleVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -38,8 +39,8 @@ public interface RoleMapper extends BaseMapper<Role> {
 
 	/**
 	 * 查询为拥有此角色用户列表
-	 * @param roleId
+	 * @param vo
 	 * @return
 	 */
-    IPage<User> selectUsersNotThisRole(IPage page, Long roleId);
+    IPage<User> selectUsersNotThisRole(IPage page, RoleVo vo);
 }

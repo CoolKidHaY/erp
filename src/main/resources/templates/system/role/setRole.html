@@ -66,12 +66,16 @@
         var tableInsC = table.render({
             elem: "#userTable",
             title: "用户数据表格",
-            url: "/role/selectGiveUserRole/" + roleId,
+            url: "/role/selectGiveUserRole",
             toolbar: "#userToolBar",
+            method: "post",
             page: true,
             request: {
                 pageName: 'pageNum',
                 limitName: 'pageSize'
+            },
+            where: {
+                "id": roleId
             },
             height: "full-80",
             cols: [ [
@@ -108,9 +112,13 @@
 
         //监控模糊查询按钮事件
         form.on("submit(doSearch)", function (data) {
-            var params = $("#searchFrm").serialize();
             tableInsC.reload({
-                url:"/role/selectGiveUserRole/" + roleId,
+                url:"/role/selectGiveUserRole",
+                method: "post",
+                where: {
+                    "id": roleId,
+                    "name": data.field.name
+                },
                 page: {
                     curr: 1
                 }

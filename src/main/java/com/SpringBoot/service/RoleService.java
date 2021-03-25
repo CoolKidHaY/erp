@@ -18,7 +18,12 @@ public interface RoleService extends IService<Role> {
 
     IPage<Role> selectRoleList(RoleVo vo);
 
-    IPage<User> selectUserByRoleId(Long id);
+    /**
+     * 角色id查询用户集合
+     * @param vo
+     * @return
+     */
+    IPage<User> selectUserByRoleId(RoleVo vo);
 
     /**
      * 删除用户与角色之间的联系
@@ -30,10 +35,10 @@ public interface RoleService extends IService<Role> {
 
     /**
      * 查询未拥有此角色用户列表
-     * @param roleId
+     * @param vo
      * @return
      */
-    IPage<User> selectUsersNotThisRole(Long roleId, Long pageNum, Long pageSize);
+    IPage<User> selectUsersNotThisRole(RoleVo vo);
 
     /**
      * 存入获取此角色的用户集合

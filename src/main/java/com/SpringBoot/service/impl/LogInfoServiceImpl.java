@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class LogInfoServiceImpl extends ServiceImpl<LogInfoMapper, LogInfo> impl
 	 */
 	@Override
 	public int batchDeleteLogInfo(LogInfoVo vo) {
-		List<Long> ids = List.of(vo.getIds());
+		List<Long> ids = Arrays.asList(vo.getIds());
 		return this.getBaseMapper().deleteBatchIds(ids);
 	}
 

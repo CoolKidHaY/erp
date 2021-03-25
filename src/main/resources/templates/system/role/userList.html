@@ -54,13 +54,17 @@
             elem: "#userTable",
             id: 'userTable',
             title: "用户数据表格",
-            url: "/role/selectUsersNotThisRole/" + roleId,
+            url: "/role/selectUsersNotThisRole",
+            method: "post",
             toolbar: "#userToolBar",
             page: true,
             limit: 5,
             request: {
                 pageName: 'pageNum',
                 limitName: 'pageSize'
+            },
+            where: {
+                "id": roleId
             },
             height: "full-60",
             cols: [ [
@@ -97,9 +101,13 @@
 
         //监控模糊查询按钮事件
         form.on("submit(doSearch)", function (data) {
-            var params = $("#searchFrm").serialize();
             tableInsD.reload({
-                url:"/role/selectUsersNotThisRole/" + roleId,
+                url:"/role/selectUsersNotThisRole",
+                method: "post",
+                where: {
+                    "id": roleId,
+                    "name": data.field.name
+                },
                 page: {
                     curr: 1
                 }

@@ -13,6 +13,9 @@
 		select * from sys_user u join sys_user_role ur on u.id = ur.uid
 		<where>
 			ur.rid = #{role.id}
+			<if test="role.name != null and role.name != ''">
+				and u.name like '%${role.name}%'
+			</if>
 		</where>
 	</select>
 
