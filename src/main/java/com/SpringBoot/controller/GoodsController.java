@@ -30,8 +30,8 @@ public class GoodsController {
 		int index=(page-1)*limit;
 		List<Goods> data = goodsServiceImpl.select(providerid, goodsname, productcode, promitcode, description, size, index, limit);
 		layuiJson.setCode(0);
-		layuiJson.setCount(1000l);
-		layuiJson.setData(data);
+		layuiJson.setTotal(1000l);
+		layuiJson.setRows(data);
 		return layuiJson;
 	}
     

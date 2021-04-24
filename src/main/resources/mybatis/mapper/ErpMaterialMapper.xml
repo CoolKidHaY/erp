@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.SpringBoot.mapper.ErpMaterialMapper">
+    
+    <resultMap type="ErpMaterial" id="ErpMaterialResult">
+        <result property="id"    column="id"    />
+        <result property="cId"    column="c_id"    />
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+        <result property="total"    column="total"    />
+        <result property="standard"    column="standard"    />
+        <result property="model"    column="model"    />
+        <result property="unit"    column="unit"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+    </resultMap>
+
+    <sql id="selectErpMaterialVo">
+        select id, c_id, code, name, total, standard, model, unit, create_by, create_time, remark, delete_flag from erp_material
+    </sql>
+
+    <select id="selectErpMaterialList" parameterType="ErpMaterial" resultMap="ErpMaterialResult">
+        <include refid="selectErpMaterialVo"/>
+        <where>  
+            <if test="cId != null "> and c_id = #{cId}</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="total != null "> and total = #{total}</if>
+            <if test="standard != null  and standard != ''"> and standard = #{standard}</if>
+            <if test="model != null  and model != ''"> and model = #{model}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectErpMaterialById" parameterType="Long" resultMap="ErpMaterialResult">
+        <include refid="selectErpMaterialVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertErpMaterial" parameterType="ErpMaterial">
+        insert into erp_material
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="cId != null">c_id,</if>
+            <if test="code != null">code,</if>
+            <if test="name != null">name,</if>
+            <if test="total != null">total,</if>
+            <if test="standard != null">standard,</if>
+            <if test="model != null">model,</if>
+            <if test="unit != null">unit,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="cId != null">#{cId},</if>
+            <if test="code != null">#{code},</if>
+            <if test="name != null">#{name},</if>
+            <if test="total != null">#{total},</if>
+            <if test="standard != null">#{standard},</if>
+            <if test="model != null">#{model},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateErpMaterial" parameterType="ErpMaterial">
+        update erp_material
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cId != null">c_id = #{cId},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="total != null">total = #{total},</if>
+            <if test="standard != null">standard = #{standard},</if>
+            <if test="model != null">model = #{model},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteErpMaterialById" parameterType="Long">
+        delete from erp_material where id = #{id}
+    </delete>
+
+    <delete id="deleteErpMaterialByIds" parameterType="String">
+        delete from erp_material where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -40,8 +40,8 @@ public class InportController {
 		int index=(page-1)*limit;
 		List<Inport> data = inportService.select(providerid, goodsid, index, limit);
 		layuiJson.setCode(0);
-		layuiJson.setCount(1000l);
-		layuiJson.setData(data);
+		layuiJson.setTotal(1000l);
+		layuiJson.setRows(data);
 		return layuiJson;
 		
 	}

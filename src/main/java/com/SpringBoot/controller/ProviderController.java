@@ -28,8 +28,8 @@ public class ProviderController {
 		int index=(page-1)*limit;
 		List<Provider> data = providerService.select(providername, connectionperson, phone, index, limit);
 		layuiJson.setCode(0);
-		layuiJson.setCount(1000l);
-		layuiJson.setData(data);
+		layuiJson.setTotal(1000l);
+		layuiJson.setRows(data);
 		return layuiJson;
 	}
 	

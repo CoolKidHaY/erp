@@ -40,8 +40,8 @@ public class OutportController {
 		int index=(page-1)*limit;
 		List<Outport> data = outportService.select(providerid, goodsid, index, limit);
 		layuiJson.setCode(0);
-		layuiJson.setCount(1000l);
-		layuiJson.setData(data);
+		layuiJson.setTotal(1000l);
+		layuiJson.setRows(data);
 		return layuiJson;
 	}
 	

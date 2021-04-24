@@ -181,7 +181,7 @@
 
         form.on("submit(doSubmit)", function (data) {
             $.post("/user/updateUser", data.field, function (res) {
-                if (res.code == 200) {
+                if (res.code == 0) {
                     window.parent.tableIns.reload();
                 }
                 var index = parent.layer.getFrameIndex(window.name)

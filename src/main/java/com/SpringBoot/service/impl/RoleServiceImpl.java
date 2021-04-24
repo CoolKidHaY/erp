@@ -104,7 +104,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
 	/**
 	 * 查询为拥有此角色用户列表
-	 * @param roleId
+	 * @param vo
 	 * @return
 	 */
 	@Override

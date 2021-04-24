@@ -46,8 +46,8 @@ public class NoticeController {
     	int index=(page-1)*limit;
     	List<Notice> data = noticeService.select(title, opername, index, limit);
 		layuiJson.setCode(0);
-		layuiJson.setCount(1000l);
-		layuiJson.setData(data);
+		layuiJson.setTotal(1000l);
+		layuiJson.setRows(data);
 
 		return layuiJson;
 

@@ -21,6 +21,8 @@ public enum BusinessType {
     /**
      * 删除
      */
-    REMOVE
+    REMOVE,
+
+    EXPORT
 
 }

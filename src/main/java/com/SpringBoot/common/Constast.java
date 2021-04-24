@@ -5,10 +5,14 @@ import org.springframework.stereotype.Component;
 public class Constast {
 
     /**
-     * 状态码  正常 200  错误  -1
+     * 状态码  正常 200  警告  301 服务器错误 500
      */
-    public static final Integer OK=200;
-    public static final Integer ERROR=-1;
+    public static final Integer OK=0;
+    public static final String OK_MSG="操作成功！";
+    public static final Integer WARM=301;
+    public static final String WARM_MSG="操作警告，请联系管理员";
+    public static final Integer ERROR=500;
+    public static final String ERROR_MSG="操作失败，请联系管理员";
 
     /**
      * 用户默认密码

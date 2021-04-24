@@ -49,6 +49,7 @@ public class DeptController {
      * @param 
      * @return
      */
+    ///dept/loadAllDept
     @RequestMapping("loadAllDept")
     @ResponseBody
     public LayuiJson<Dept> select(Dept dept){
@@ -101,7 +102,7 @@ public class DeptController {
     @ResponseBody
     public Map<String, Boolean> checkDeptHasChildrenNode(Long id){
     	Map<String, Boolean> map = new HashMap<String, Boolean>();
-    	Dept dept = deptService.selectDeptById(id);
+    	Dept dept = deptService.selectDeptByPId(id);
          if (ObjectUtil.isNotNull(dept)) {
              map.put("value", true);
          } else {

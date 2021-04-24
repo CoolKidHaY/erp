@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.SpringBoot.mapper.ErpFactoryMapper">
+    
+    <resultMap type="ErpFactory" id="ErpFactoryResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="address"    column="address"    />
+        <result property="sort"    column="sort"    />
+        <result property="remark"    column="remark"    />
+        <result property="principal"    column="principal"    />
+        <result property="principalName"    column="principal_name"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+    </resultMap>
+
+    <sql id="selectErpFactoryVo">
+        select id, name, address, sort, remark, principal, principal_name, delete_flag from erp_factory
+    </sql>
+
+    <select id="selectErpFactoryList" parameterType="ErpFactory" resultMap="ErpFactoryResult">
+        <include refid="selectErpFactoryVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="sort != null  and sort != ''"> and sort = #{sort}</if>
+            <if test="principal != null "> and principal = #{principal}</if>
+            <if test="principalName != null "> and principal_name like concat('%', #{principalName}, '%')</if>
+            <if test="deleteFlag != null  and deleteFlag != ''"> and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectErpFactoryById" parameterType="Long" resultMap="ErpFactoryResult">
+        <include refid="selectErpFactoryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertErpFactory" parameterType="ErpFactory">
+        insert into erp_factory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="address != null">address,</if>
+            <if test="sort != null">sort,</if>
+            <if test="remark != null">remark,</if>
+            <if test="principal != null">principal,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="address != null">#{address},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="principal != null">#{principal},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateErpFactory" parameterType="ErpFactory">
+        update erp_factory
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="principal != null">principal = #{principal},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteErpFactoryById" parameterType="Long">
+        delete from erp_factory where id = #{id}
+    </delete>
+
+    <delete id="deleteErpFactoryByIds" parameterType="String">
+        delete from erp_factory where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

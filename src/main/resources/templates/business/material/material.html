@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('材料列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>材料种类：</label>
+                                <input id="treeId" name="cId" type="text" hidden/>
+                                <input class="form-control" type="text" onclick="selectCategoryTree()" id="treeName" readonly="true">
+                            </li>
+                            <li>
+                                <label>材料编号：</label>
+                                <input type="text" name="code"/>
+                            </li>
+                            <li>
+                                <label>材料名称：</label>
+                                <input type="text" name="name"/>
+                            </li>
+                            <li>
+                                <label>材料总数：</label>
+                                <input type="text" name="total"/>
+                            </li>
+                            <li>
+                                <label>产品规格：</label>
+                                <input type="text" name="standard"/>
+                            </li>
+                            <li>
+                                <label>产品型号：</label>
+                                <input type="text" name="model"/>
+                            </li>
+                            <li>
+                                <label>材料单位：</label>
+                                <input type="text" name="unit"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" >
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" >
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" >
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/material";
+
+        $(function() {
+            let options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "材料",
+                onDblClickCell: onDblClickCell,
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'cid',
+                    title: '材料类别',
+                    formatter: function (value, row, index) {
+                       return getNameById(value);
+                    }
+                },
+                {
+                    field: 'code',
+                    title: '材料编号'
+                },
+                {
+                    field: 'name',
+                    title: '材料名称'
+                },
+                {
+                    field: 'total',
+                    title: '材料总数'
+                },
+                {
+                    field: 'standard',
+                    title: '产品规格'
+                },
+                {
+                    field: 'model',
+                    title: '产品型号'
+                },
+                {
+                    field: 'unit',
+                    title: '材料单位'
+                },
+                {
+                    field: 'remark',
+                    title: '备注'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>查看库存(待做)</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        function onDblClickCell(field, value, row, $element){
+
+            $.modal.openFull('材料原件详情', prefix+'/detail/'+row['id'],null,null,false);
+        }
+
+        /*材料类别-新增-选择父部门树*/
+        function selectCategoryTree() {
+            var prefix1 = ctx + "business/category";
+            var options = {
+                title: '材料类别选择',
+                width: "380",
+                url: prefix1 + "/selectCategoryTree/" + $("#treeId").val(),
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmit(index, layero){
+            var body = layer.getChildFrame('body', index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            layer.close(index);
+        }
+
+        function getNameById(id) {
+            var name = "";
+            $.ajax({
+                url: "category/getNameById/" + id,
+                async: false,
+                success: function (result) {
+                    name = result;
+                }
+            });
+            return name;
+        }
+    </script>
+</body>
+</html>

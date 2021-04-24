@@ -74,4 +74,14 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
 		return this.baseMapper.selectList(null);
 	}
 
+	/**
+	 * pid查询部门
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public Dept selectDeptByPId(Long id) {
+		return this.baseMapper.selectOne(new QueryWrapper<Dept>().eq("pid", id));
+	}
+
 }

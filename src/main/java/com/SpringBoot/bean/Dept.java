@@ -51,7 +51,7 @@ public class Dept {
     private LocalDateTime createTime;
 
     @TableField(exist = false)
-    private String pname;
+    private String pName;
 
     @TableLogic(value = "0", delval = "1")
     private Integer delete_flag;

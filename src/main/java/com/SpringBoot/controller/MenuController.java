@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.SpringBoot.bean.Dept;
 import com.SpringBoot.bean.User;
 import com.SpringBoot.service.MenuService;
 import com.SpringBoot.service.impl.MenuServiceImpl;
@@ -136,8 +137,9 @@ public class MenuController {
     @RequestMapping("/loadAllMenu")
     @ResponseBody
     public LayuiJson<Menu> selectMenuByTitle(MenuVo vo) {
-        List<Menu> list = menuService.selectMenuByTitle(vo);
-        return new LayuiJson<>(list, (long)list.size(), 0);
+        List<Menu> data= menuService.selectMenuByTitle(vo);
+        LayuiJson<Menu> resultData = new LayuiJson<>(data, (long) data.size(), 0);
+        return resultData;
     }
 
     @GetMapping("/addMenuIndex")

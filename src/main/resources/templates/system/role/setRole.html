@@ -74,6 +74,13 @@
                 pageName: 'pageNum',
                 limitName: 'pageSize'
             },
+            response: {
+                statusName: 'code', //状态字段名称
+                statusCode: '0', //状态字段成功值
+                msgName: 'msg', //消息字段
+                countName: 'total',
+                dataName: "rows"
+            },
             where: {
                 "id": roleId
             },
@@ -163,7 +170,7 @@
                         var userIds = users.map((user) => user.id);
                         var ids = userIds.toString();
                         $.post('/role/insertUserRole', {ids: ids, roleId: roleId}, function (result) {
-                            if (result.code == 200){
+                            if (result.code == 0){
                                 tableInsC.reload({
                                     where:"",
                                 });
@@ -180,7 +187,7 @@
         function deleteRole(data, roleId){
             layer.confirm('你确定要删除【'+data.name+'】这条数据吗？',{icon: 3,title:'提示'},function (index) {
                 $.post("/role/deleteRolesUser",{userId:data.id, roleId: roleId},function (res) {
-                    if (res.code==200){
+                    if (res.code==0){
                         tableInsC.reload({
                             where:"",
                         });

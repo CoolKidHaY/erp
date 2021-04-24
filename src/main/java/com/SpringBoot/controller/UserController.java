@@ -105,10 +105,10 @@ public class UserController {
     /**
      * 删除用户
      */
-    @DeleteMapping("/deleteUser")
+    @DeleteMapping("/deleteUser/{id}")
     @ResponseBody
     @Log(moduleName = "用户模块", businessType = BusinessType.REMOVE)
-    public ResultObj deleteUser(Long id) {
+    public ResultObj deleteUser(@PathVariable("id") Long id) {
         try {
             int row = userService.deleteUserById(id);
             return ResultObj.DELETE_SUCCESS;

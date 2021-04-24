@@ -130,6 +130,13 @@
                 pageName: "pageNum",
                 limitName: "pageSize"
             },
+            response: {
+                statusName: 'code', //状态字段名称
+                statusCode: '0', //状态字段成功值
+                msgName: 'msg', //消息字段
+                countName: 'total',
+                dataName: "rows"
+            },
             cols: [ [
                 {field: 'name', title: '角色名称', align: 'center'},
                 {field: 'remark', title: '角色备注', align: 'center'},
@@ -227,7 +234,7 @@
         //提交按钮事件
         form.on("submit(doSubmit)", function (data) {
             $.post(url, data.field, function (res) {
-                if (res.code == 200) {
+                if (res.code == 0) {
                     tableIns.reload();
                 }
                 layer.msg(res.msg);
@@ -243,7 +250,7 @@
                 title: '提示'
             }, function (index) {
                 $.post("/role/deleteRole", {id: data.id}, function (res) {
-                    if (res.code == 200) {
+                    if (res.code == 0) {
                         tableIns.reload({
                             where: "",
                         });

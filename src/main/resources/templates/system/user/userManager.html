@@ -145,6 +145,13 @@
             page: true,
             limit: 9,
             height: "full-120",
+            response: {
+                statusName: 'code', //状态字段名称
+                statusCode: '0', //状态字段成功值
+                msgName: 'msg', //消息字段
+                countName: 'total',
+                dataName: 'rows'
+            },
             cols: [ [
                 {field: 'id', title: 'ID', align: 'center', width: '50'},
                 {field: 'name', title: '用户名', align: 'center', width: '130'},
@@ -248,8 +255,8 @@
       //删除
         function deleteUser(data) {
             layer.confirm('你确定要删除【' + data.name + '】这个用户吗？', {icon: 3, title: '提示'}, function (index) {
-                $.post("/user/deleteUser", {_method: "DELETE", id: data.id}, function (res) {
-                    if (res.code == 200) {
+                $.post("/user/deleteUser/" + data.id, {_method: "DELETE"}, function (res) {
+                    if (res.code == 0) {
                         tableIns.reload({
                             where:"",
                         });

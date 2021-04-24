@@ -80,6 +80,17 @@
             removeUrl: prefix + "/remove",
             exportUrl: prefix + "/export",
             modalName: "角色",
+            request: {
+                pageName: "pageNum",
+                limitName: "pageSize"
+            },
+            response: {
+                statusName: 'code', //状态字段名称
+                statusCode: '0', //状态字段成功值
+                msgName: 'msg', //消息字段
+                countName: 'total',
+                dataName: "rows"
+            },
             columns: [{
                 checkbox: true
             },

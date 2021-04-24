@@ -167,16 +167,21 @@
         // 渲染表格
         insTb = treeTable.render({
             elem: '#menu',
-            url: '/dept/loadAllDept',
+            // url: '/dept/loadAllDept',
             toolbar: '#deptToolBar',
             height: 'full-130',
             tree: {
                 iconIndex: 1,
                 isPidData: true,
                 idName: 'id',
-                pidName: 'pid'
+                pidName: 'pid',
+                dataName: 'rows'
             },
-            page: false,
+            reqData: function (data, callback) {
+                $.get('/dept/loadAllDept', function (result) {
+                    callback(result.rows);
+                })
+            },
             cols: [ [
                 {type: 'checkbox'},
                 {field: 'name', title: '部门名称', align: 'left', width: '250'},
@@ -200,9 +205,11 @@
             switch (obj.event) {
                 case 'delete':
                     deleteDept(data);
+                    insTb.reload();
                     break;
                 case 'update':
                     updateDept(data);
+                    insTb.reload();
                     break;
             };
         });
@@ -264,7 +271,7 @@
                     selectTree.selectVal("");
                     //layer.msg(res.msg);
                     layer.close();
-                    insTb.reload()
+                    insTb.reload();
                 }
             });
         }
@@ -291,7 +298,7 @@
 
         form.on("submit(doSubmit)",function (data) {
             $.post(url,data.field,function (res) {
-                if (res.code==200){
+                if (res.code==0){
                     insTb.reload();
                     //重新加载添加弹出层的下拉树
                     selectTree.reload();
@@ -310,7 +317,7 @@
                 }else {
                     layer.confirm('你确定要删除【' + data.name + '】这个部门吗？', {icon: 3, title: '提示'}, function (index) {
                         $.post("/dept/deleteDept", {id: data.id},function (res) {
-                            if (res.code == 200) {
+                            if (res.code == 0) {
                                 insTb.reload({
                                     where:"",
                                 });
@@ -331,14 +338,14 @@
             width: "100%", // 可以在这里指定树的宽度来填满div
             dataStyle: "layuiStyle", //使用layui风格的数据格式
             dataFormat: "list",     //配置data的风格为list
-            response:{message:"msg",statusCode:0},  //修改response中返回数据的定义
+            response:{message:"msg",statusCode:0, title: "name"},  //修改response中返回数据的定义
             url: "/dept/loadDeptManagerLeftTreeJson" // 使用url加载（可与data加载同时存在）
         });
 
         //监听点击的方法
         dtree.on("node(deptTree)",function (obj) {
             $("#pid").val(obj.param.nodeId);
-            console.log(obj.param.nodeId);
+            // console.log(obj.param.nodeId);
         });
     });
 

@@ -54,4 +54,10 @@ public interface DeptService extends IService<Dept> {
      */
     List<Dept> selectAllDept();
 
+    /**
+     * pid查询部门
+     * @param id
+     * @return
+     */
+    Dept selectDeptByPId(Long id);
 }

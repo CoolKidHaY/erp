@@ -38,8 +38,8 @@ public class RoleController {
 		IPage<Role> page = roleService.selectRoleList(vo);
 		LayuiJson<Role> layuiJson = new LayuiJson<>();
 		layuiJson.setCode(0);
-		layuiJson.setCount(page.getTotal());
-		layuiJson.setData(page.getRecords());
+		layuiJson.setTotal(page.getTotal());
+		layuiJson.setRows(page.getRecords());
 		return layuiJson;
 
 	 }
@@ -132,8 +132,8 @@ public class RoleController {
 		IPage<User> page = roleService.selectUserByRoleId(vo);
 
 		LayuiJson<User> layuiJson = new LayuiJson<>();
-		layuiJson.setData(page.getRecords());
-		layuiJson.setCount(page.getTotal());
+		layuiJson.setRows(page.getRecords());
+		layuiJson.setTotal(page.getTotal());
 		layuiJson.setCode(0);
 
 		return layuiJson;
@@ -185,8 +185,8 @@ public class RoleController {
 	public LayuiJson<User> selectUsersNotThisRole(RoleVo vo) {
 		IPage<User> page = roleService.selectUsersNotThisRole(vo);
 		LayuiJson<User> layuiJson = new LayuiJson<>();
-		layuiJson.setData(page.getRecords());
-		layuiJson.setCount(page.getTotal());
+		layuiJson.setRows(page.getRecords());
+		layuiJson.setTotal(page.getTotal());
 		layuiJson.setCode(0);
 
 		return layuiJson;

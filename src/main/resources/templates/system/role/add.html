@@ -121,7 +121,7 @@
         };
         $.getJSON("/role/addRole", data, function(data){
             //根据后台返回的参数，来进行判断
-            if(data.code == "200"){
+            if(data.code == 0){
                 layer.alert(data.msg,{icon:1,title:'提示'},function(i){
                     $("#dataFrm")[0].reset()//重置form
                     window.parent.location.reload();//刷新父页面

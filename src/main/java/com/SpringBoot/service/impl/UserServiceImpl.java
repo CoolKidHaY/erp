@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-@Service
+@Service("UserService")
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
 	@Autowired

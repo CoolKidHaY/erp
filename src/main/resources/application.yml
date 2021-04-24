@@ -58,8 +58,11 @@ spring:
     
   mvc:
     date-format:  yyyy-MM-dd HH:mm:ss
-    
-    
+    hiddenmethod:
+      filter:
+        enabled: true
+
+
   thymeleaf:
     cache: false
     enabled: true

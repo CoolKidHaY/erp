@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增材料')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-material-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">材料类别：</label>
+                <div class="col-sm-8">
+                    <input id="treeId" name="cId" type="text" hidden/>
+                    <input class="form-control" type="text" onclick="selectCategoryTree()" id="treeName" readonly="true">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">材料编号：</label>
+                <div class="col-sm-8">
+                    <input name="code" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">材料名称：</label>
+                <div class="col-sm-8">
+                    <input name="name" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">产品规格：</label>
+                <div class="col-sm-8">
+                    <input name="standard" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">产品型号：</label>
+                <div class="col-sm-8">
+                    <input name="model" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">材料单位：</label>
+                <div class="col-sm-8">
+                    <input name="unit" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">备注：</label>
+                <div class="col-sm-8">
+                    <input name="remark" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/material"
+        $("#form-material-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-material-add').serialize());
+            }
+        }
+
+        /*材料类别-新增-选择父部门树*/
+        function selectCategoryTree() {
+            var prefix1 = ctx + "business/category";
+            var options = {
+                title: '材料类别选择',
+                width: "380",
+                url: prefix1 + "/selectCategoryTree/" + $("#treeId").val(),
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmit(index, layero){
+            var body = layer.getChildFrame('body', index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            layer.close(index);
+        }
+    </script>
+</body>
+</html>

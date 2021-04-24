@@ -250,7 +250,7 @@
                 // 渲染表格
                 insTb = treeTable.render({
                     elem: '#menu',
-                    url: '/menu/loadAllMenu',
+                    // url: '/menu/loadAllMenu',
                     toolbar: '#menuToolBar',
                     height: 'full-130',
                     tree: {
@@ -258,8 +258,13 @@
                         isPidData: true,
                         idName: 'id',
                         pidName: 'pid',
+                        dataName: "rows"
                     },
-                    page: false,
+                    reqData: function (data, callback) {
+                        $.get('/menu/loadAllMenu', function (result) {
+                            callback(result.rows);
+                        })
+                    },
                     cols: [
                         {type: 'checkbox'},
                         {field: 'title', title: '菜单名称', align: 'left', width: '250'},
@@ -311,9 +316,11 @@
                     switch (obj.event) {
                         case 'delete':
                             deleteDept(data);
+                            insTb.reload();
                             break;
                         case 'update':
                             updateDept(data);
+                            insTb.reload();
                             break;
                     }
                 });
@@ -374,7 +381,7 @@
                             //设置下拉树的value值为空
                             selectTree.selectVal("");
                             layer.close();
-                            insTb.reload()
+                            // insTb.reload()
                         }
                     });
                 }
@@ -423,7 +430,7 @@
 
                 form.on("submit(doSubmit)", function (data) {
                     $.post(url, data.field, function (res) {
-                        if (res.code == 200) {
+                        if (res.code == 0) {
                             insTb.reload();
                             //重新加载添加弹出层的下拉树
                             selectTree.reload();
@@ -440,9 +447,9 @@
                         if (result.value) {
                             layer.msg("当前菜单节点有子菜单，请选择删除子菜单！")
                         } else {
-                            layer.confirm('你确定要删除【' + data.name + '】这个菜单吗？', {icon: 3, title: '提示'}, function (index) {
+                            layer.confirm('你确定要删除【' + data.title + '】这个菜单吗？', {icon: 3, title: '提示'}, function (index) {
                                 $.post("/menu/deleteMenu", {id: data.id}, function (res) {
-                                    if (res.code == 200) {
+                                    if (res.code == 0) {
                                         insTb.reload({
                                             where: "",
                                         });

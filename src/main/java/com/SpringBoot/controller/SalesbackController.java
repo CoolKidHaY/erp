@@ -40,8 +40,8 @@ public class SalesbackController {
 		int index=(page-1)*limit;
 		List<Salesback> data = salesbackService.select(customerid, goodsid, index, limit);
 		layuiJson.setCode(0);
-		layuiJson.setCount(1000l);
-		layuiJson.setData(data);
+		layuiJson.setTotal(1000l);
+		layuiJson.setRows(data);
 		return layuiJson;
 	}
 
