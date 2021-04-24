@@ -87,6 +87,12 @@ public class ErpFactoryController
         return LayuiJson.toAjax(erpFactoryService.insertErpFactory(erpFactory));
     }
 
+    @GetMapping("/detail/{id}")
+    @ResponseBody
+    public ErpFactory detail(@PathVariable("id") Long id){
+        return erpFactoryService.getById(id);
+    }
+
     /**
      * 修改仓库
      */

@@ -96,6 +96,7 @@
                     formatter: function(value, row, index) {
                         var actions = [];
                         actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-info btn-xs" href="javascript:void(0)" onclick="getStock(\'' + row.id + '\')"><i class="fa fa-search"></i>查看库存</a> ');
                         actions.push('<a class="btn btn-danger btn-xs " href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
                         return actions.join('');
                     }
@@ -103,6 +104,11 @@
             };
             $.table.init(options);
         });
+
+        // 查看仓库库存
+        function getStock(id) {
+            $.modal.open("查看仓库库存", "stock/getStock/" + id, 1200);
+        }
     </script>
 </body>
 </html>
