@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增采购')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-purchase-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label"><span style="color: red">*</span>采购人姓名：</label>
+                <div class="col-sm-8">
+                    <input id="purUserName" name="purUserName" class="form-control" type="text" onfocus="getUserList()" readonly>
+                    <input id="purUserId" name="purUserId" class="form-control" type="hidden">
+                </div>
+            </div>
+
+            <div id="opts">
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12  col-xs-12" style="padding: 0 30px;">
+                    <div class="form-group" style="float: right">
+                        <button id="fat-btn-add" class="addInput btn btn-primary " type="button">添加</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script id="itemTpl" type="text/html">
+        <div data-item-box data-id="item-{{ dataId }}" class="layui-form">
+            <div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label dataInfo ">
+                        <span class="dataInfo-tit">采购信息</span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        <span style="color: red">*</span>采购材料
+                    </label>
+                    <div class="col-sm-8">
+                        <input id="material{{dataId}}" name="mName" type="text" class="form-control" onfocus="getAllMaterial()" readonly/>
+                        <input name="mCode" type="hidden">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        <span style="color: red">*</span>供应商
+                    </label>
+                    <div class="col-sm-8">
+                        <input name="pName" id="provider{{dataId}}" type="text" class="form-control" onfocus="getAllProvider()" readonly>
+                        <input name="pId" type="hidden">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        数量
+                    </label>
+                    <div class="col-sm-8">
+                        <input name="num" id="num{{dataId}}" type="text" class="form-control" onchange="computeTotalPrice()">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        单价
+                    </label>
+                    <div class="col-sm-8">
+                        <input id="price{{dataId}}" name="unitPrice" class="form-control" readonly type="text">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        总价
+                    </label>
+                    <div class="col-sm-8">
+                        <input id="totalPrice{{dataId}}" name="totalPrice" class="form-control" readonly type="text">
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group" style="float: right">
+                        <button onclick="deleteItem('item-{{ dataId }}', '{{ dataId }}')" class="btn btn-primary"
+                                type="button">
+                            删除
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script th:inline="javascript">
+        var prefix = ctx + "business/purchase";
+
+
+        $("#form-purchase-add").validate({
+            focusCleanup: true
+        });
+
+        var data = {};
+        function submitHandler(index, layero, state) {
+            data.itemList = [];
+            data.purUserName = $("#purUserName").val();
+            data.purUserId = $("#purUserId").val();
+            data.state = state;
+
+            $("[data-item-box]").each(function (idx, item) {
+                let $item = $(item);
+
+                let dataItem = {};
+
+                dataItem.mCode = $item.find("[name='mCode']").val().trim();
+                dataItem.mName = $item.find("[name='mName']").val().trim();
+                dataItem.unitPrice = $item.find("[name='unitPrice']").val().trim();
+                dataItem.num = $item.find("[name='num']").val().trim();
+                dataItem.totalPrice = $item.find("[name='totalPrice']").val().trim();
+                dataItem.pId = $item.find("[name='pId']").val().trim();
+                dataItem.pName = $item.find("[name='pName']").val().trim();
+
+                data.itemList.push(dataItem);
+            });
+
+            if (data.itemList.length < 1){
+                $.modal.alertWarning('请添加采购信息！');
+                return false;
+            }
+
+            if ($.validate.form()) {
+                $.ajax({
+                    url: prefix + "/add",
+                    type: "POST",
+                    dataType: "json",
+                    data: JSON.stringify(data),
+                    contentType: "application/json; charset=utf-8",
+                    beforeSend: function () {
+                        $.modal.loading("正在处理中，请稍后...");
+                        $.modal.disable();
+                    },
+                    success: function (result) {
+                        $.operate.successCallback(result);
+                    },
+                    error: function () {
+                        $.modal.alertError('保存异常，请联系管理员！');
+                    }
+                });
+            }
+        }
+
+        var itemIdCounter = 0;
+        //动态添加、删除输入框的效果
+        $(".addInput").click(function () {
+            let itemHtml = Mustache.render($("#itemTpl").html(), {
+                dataId: itemIdCounter++,
+            });
+            $('#opts').append(itemHtml);
+        });
+
+        // 删除div
+        function deleteItem(selectorId) {
+            $("[data-id='" + selectorId + "']").remove();
+        }
+
+        /* 采购部成员列表 */
+        function getUserList() {
+            openFull('采购人', prefix + '/userList');
+        }
+
+        /* 采购材料弹窗 */
+        function getAllMaterial() {
+            openFull('全部材料', prefix + '/allMaterial');
+        }
+
+        /* 供应商弹窗 */
+        function getAllProvider() {
+            openFull('供应商', prefix + '/allProvider');
+        }
+        function openFull(title, url, width, height, callback, callback1) {
+            //如果是移动端，就使用自适应大小弹窗
+            if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)) {
+                width = 'auto';
+                height = 'auto';
+            }
+            if ($.common.isEmpty(title)) {
+                title = false;
+            }
+            if ($.common.isEmpty(url)) {
+                url = "/404.html";
+            }
+            if ($.common.isEmpty(width)) {
+                width = 800;
+            }
+            if ($.common.isEmpty(height)) {
+                height = ($(window).height() - 50);
+            }
+            var index = layer.open({
+                type: 2,
+                area: [width + 'px', height + 'px'],
+                fix: false,
+                //不固定
+                maxmin: true,
+                shade: 0.3,
+                title: title,
+                content: url,
+                // 弹层外区域关闭
+                shadeClose: false
+            });
+            layer.full(index);
+        }
+
+        /* 采购人 */
+        function setPurchase(id, name) {
+            var uId = id.split(",")[0];
+            var uName = id.split(",")[1];
+            $("#purUserName").prop("value", uName);
+            $("#purUserId").prop("value", uId)
+        }
+
+
+        /* 格式化材料 */
+        var unitPrice;  // 材料单价
+        function setMaterial(id, name){
+            var mId = id.split(",")[0];
+            var mName = id.split(",")[1];
+            var price = id.split(",")[2];
+            var count = itemIdCounter - 1;
+            $("#material" + count).prop("value", mName);
+            $("#material" + count).next().prop("value", mId)
+            $("#price" + count).prop("value", price);
+            unitPrice = price;
+        }
+
+        /* 供应商 */
+        function setProvider(id) {
+            var pId = id.split(",")[0];
+            var pName = id.split(",")[1];
+            var count = itemIdCounter - 1;
+            $("#provider" + count).prop("value", pName);
+            $("#provider" + count).next().prop("value", pId)
+        }
+
+        /* 计算总价 */
+        function computeTotalPrice() {
+            var count = itemIdCounter - 1;
+            var number = $("#num" + count).val();
+            var totalPrice = (parseFloat(unitPrice) * number).toFixed(2);
+            $("#totalPrice" + count).prop("value", totalPrice)
+        }
+
+    </script>
+
+</body>
+</html>

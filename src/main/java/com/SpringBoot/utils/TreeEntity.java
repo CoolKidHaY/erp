@@ -19,9 +19,11 @@ public class TreeEntity
     private Long parentId;
 
     /** 显示顺序 */
+    @TableField(exist = false)
     private Integer orderNum;
 
     /** 祖级列表 */
+    @TableField(exist = false)
     private String ancestors;
 
     public String getParentName()

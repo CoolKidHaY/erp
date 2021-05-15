@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('库存列表')" />
+</head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <input id="mId" name="mId" type="hidden" th:value="${mId}">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>物品名称：</label>
+                            <input type="text" name="name"/>
+                        </li>
+                        <li>
+                            <label>物品类型：</label>
+                            <select class="form-control m-b" name="type">
+                                <option value="">---</option>
+                                <option value="0">材料</option>
+                                <option value="1">产品</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>状态：</label>
+                            <select class="form-control m-b" name="state">
+                                <option value="">---</option>
+                                <option value="充足">充足</option>
+                                <option value="正常">正常</option>
+                                <option value="短缺">短缺</option>
+                                <option value="无货">无货</option>
+                            </select>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+    var prefix = ctx + "business/stock";
+
+    $(function() {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "库存",
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'fid',
+                    title: '仓库名称',
+                    formatter: function (value, row, index) {
+                        // console.log(value);
+                        return getFactoryName(value);
+                    }
+                },
+                {
+                    field: 'code',
+                    title: '物品编号'
+                },
+                {
+                    field: 'name',
+                    title: '物品名称'
+                },
+                {
+                    field: 'type',
+                    title: '物品类型',
+                    formatter: function (value, row, index) {
+                        if (value == 0){
+                            return '材料';
+                        } else if(value == 1) {
+                            return '商品';
+                        }
+                    }
+                },
+                {
+                    field: 'total',
+                    title: '总量'
+                },
+                {
+                    field: 'state',
+                    title: '状态'
+                },
+                {
+                    field: 'unitPrice',
+                    title: '单价'
+                },
+                {
+                    field: 'remark',
+                    title: '备注'
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function getFactoryName(value) {
+        var name = "";
+        $.ajax({
+            url: '/business/factory/detail/' + value,
+            type: "GET",
+            async: false,
+            success: function (result) {
+                name = result.name;
+            }
+        });
+        return name;
+    }
+</script>
+</body>
+</html>

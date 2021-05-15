@@ -60,4 +60,11 @@ public interface IErpFactoryMaterialService extends IService<ErpFactoryMaterial>
      * @return 结果
      */
     public int deleteErpFactoryMaterialById(Long id);
+
+//    /**
+//     * 材料id查询库存
+//     * @param id
+//     * @return
+//     */
+//    List<ErpFactoryMaterial> selectStockByMid(Long id);
 }

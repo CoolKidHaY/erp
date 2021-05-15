@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.SpringBoot.mapper.ErpProduceCategoryMapper">
+    
+    <resultMap type="ErpProduceCategory" id="ErpProduceCategoryResult">
+        <result property="id"    column="id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="name"    column="name"    />
+        <result property="sort"    column="sort"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <sql id="selectErpProduceCategoryVo">
+        select id, parent_id, name, sort, remark, create_by, create_time, update_by, update_time, delete_flag from erp_produce_category
+    </sql>
+
+    <select id="selectErpProduceCategoryList" parameterType="ErpProduceCategory" resultMap="ErpProduceCategoryResult">
+        <include refid="selectErpProduceCategoryVo"/>
+        <where>
+            delete_flag = 0
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+        </where>
+        order by parent_id
+    </select>
+    
+    <select id="selectErpProduceCategoryById" parameterType="Long" resultMap="ErpProduceCategoryResult">
+        select t.id, t.parent_id, t.name, t.sort, t.remark, t.create_by, t.create_time, t.update_by, t.update_time, t.delete_flag, p.name as parent_name
+        from erp_produce_category t
+        left join erp_produce_category p on p.id = t.parent_id
+        where t.id = #{id} and t.delete_flag = 0
+    </select>
+    <select id="getNameById" resultType="java.lang.String">
+        select name from erp_produce_category where id = #{id}
+    </select>
+
+    <insert id="insertErpProduceCategory" parameterType="ErpProduceCategory">
+        insert into erp_produce_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="name != null">name,</if>
+            <if test="sort != null">sort,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateErpProduceCategory" parameterType="ErpProduceCategory">
+        update erp_produce_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteErpProduceCategoryById" parameterType="Long">
+        delete from erp_produce_category where id = #{id}
+    </delete>
+
+    <delete id="deleteErpProduceCategoryByIds" parameterType="String">
+        delete from erp_produce_category where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

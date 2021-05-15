@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 /**
@@ -21,11 +23,12 @@ public class ErpFactoryMaterial
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.ASSIGN_ID)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
-    /** 存储物品id(材料/产品) */
-    private Long mId;
+    /** 存储物品编号(材料/产品) */
+    private String code;
 
     /** 存储商品类型 */
     private Integer type;

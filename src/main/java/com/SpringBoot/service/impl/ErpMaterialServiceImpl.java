@@ -77,6 +77,10 @@ public class ErpMaterialServiceImpl extends ServiceImpl<ErpMaterialMapper, ErpMa
     @Override
     public int updateErpMaterial(ErpMaterial erpMaterial)
     {
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getPrincipal();
+        erpMaterial.setUpdateBy(user.getName());
+        erpMaterial.setUpdateTime(new Date());
         return this.getBaseMapper().updateById(erpMaterial);
     }
 

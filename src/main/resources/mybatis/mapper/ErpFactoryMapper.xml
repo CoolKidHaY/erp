@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectErpFactoryVo">
-        select id, name, address, sort, remark, principal, principal_name, delete_flag from erp_factory
+        select id, name, address, sort, remark, principal, principal_name,total_capacity, used_capacity, flag, delete_flag from erp_factory
     </sql>
 
     <select id="selectErpFactoryList" parameterType="ErpFactory" resultMap="ErpFactoryResult">
@@ -69,6 +69,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
         </trim>
         where id = #{id}
+    </update>
+    <update id="updateUsedCapacity">
+        update erp_factory set used_capacity = used_capacity + #{increaseCapacity} where id = #{id}
     </update>
 
     <delete id="deleteErpFactoryById" parameterType="Long">

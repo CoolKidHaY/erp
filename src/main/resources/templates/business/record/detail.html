@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('仓库操作记录详情')"/>
+    <th:block th:include="include :: datetimepicker-css"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-activity-edit" th:object="${erpFactoryRecord}">
+        <table class="table table-bordered myinfoTable">
+            <div class="dataInfo-tit">
+                <span></span>
+                记录详情
+            </div>
+            <tr>
+                <td width="20%" class="myinfoTableKey" align="center">仓库名称：</td>
+                <td width="30%" th:text="*{cName}"></td>
+                <td width="20%" class="myinfoTableKey" align="center">类型：</td>
+                <td width="30%" th:text="*{type}"></td>
+            </tr>
+            <tr>
+                <td width="20%" class="myinfoTableKey" align="center">出入库单号：</td>
+                <td width="30%" id="code" th:text="*{code}"></td>
+                <td width="20%" class="myinfoTableKey" align="center">状态：</td>
+                <td width="30%" id="state"></td>
+            <tr>
+                <td width="20%" class="myinfoTableKey" align="center">操作时间：</td>
+                <td width="30%" th:text="${#dates.format(erpFactoryRecord.operBeginTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td width="20%" class="myinfoTableKey" align="center">备注：</td>
+                <td width="30%" th:utext="*{remark}"></td>
+            </tr>
+
+        </table>
+        <div th:if="*{#strings.startsWith(code, 'CG')}">
+            <div class="dataInfo-tit">
+                <span></span>
+                采购信息
+            </div>
+            <table class="table table-bordered myinfoTable">
+                <tr>
+                    <td width="20%" class="myinfoTableKey" align="center">采购单号：</td>
+                    <td colspan="5" th:text="${erpFactoryRecord.erpPurchase.orderNo}"></td>
+                </tr>
+                <tr>
+                    <td width="20%" class="myinfoTableKey" align="center">总金额：</td>
+                    <td width="30%" th:text="${erpFactoryRecord.erpPurchase.money}"></td>
+                    <td width="20%" class="myinfoTableKey" align="center">采购人：</td>
+                    <td width="30%" th:text="${erpFactoryRecord.erpPurchase.purUserName}"></td>
+                </tr>
+                <tr>
+                    <td width="20%" class="myinfoTableKey" align="center">采购开始时间：</td>
+                    <td width="30%"
+                        th:text="${#dates.format(erpFactoryRecord.erpPurchase.purBeginTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td width="20%" class="myinfoTableKey" align="center">采购结束时间：</td>
+                    <td width="30%"
+                        th:text="${#dates.format(erpFactoryRecord.erpPurchase.purEndTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+                <tr>
+                    <td width="20%" class="myinfoTableKey" align="center">创建人：</td>
+                    <td width="30%" th:text="${erpFactoryRecord.erpPurchase.createBy}"></td>
+                    <td width="20%" class="myinfoTableKey" align="center">创建时间：</td>
+                    <td width="30%"
+                        th:text="${#dates.format(erpFactoryRecord.erpPurchase.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+                <tr>
+                    <td width="20%" class="myinfoTableKey" align="center">更新人：</td>
+                    <td width="30%" th:text="${erpFactoryRecord.erpPurchase.updateBy}"></td>
+                    <td width="20%" class="myinfoTableKey" align="center">更新时间：</td>
+                    <td width="30%"
+                        th:text="${#dates.format(erpFactoryRecord.erpPurchase.updateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+            </table>
+
+            <div th:each="item : ${erpFactoryRecord.erpPurchase.itemList}">
+                <div class="dataInfo-tit">
+                    <span></span>
+                    采购项
+                </div>
+                <table class="table table-bordered myinfoTable">
+                    <tr>
+                        <td width="20%" class="myinfoTableKey" align="center">材料编号：</td>
+                        <td width="30%" th:text="${item.mCode}"></td>
+                        <td width="20%" class="myinfoTableKey" align="center">材料名称：</td>
+                        <td width="30%" th:text="${item.mName}"></td>
+                    </tr>
+                    <tr>
+                        <td width="20%" class="myinfoTableKey" align="center">单价：</td>
+                        <td width="30%" th:text="${item.unitPrice}"></td>
+                        <td width="20%" class="myinfoTableKey" align="center">数量：</td>
+                        <td width="30%" th:text="${item.num}"></td>
+                    </tr>
+                    <td width="20%" class="myinfoTableKey" align="center">总价：</td>
+                    <td width="30%" th:text="${item.totalPrice}"></td>
+                    <td width="20%" class="myinfoTableKey" align="center">供应商：</td>
+                    <td width="30%" th:text="${item.pName}"></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+        <div th:if="*{#strings.startsWith(code, 'XS')}">
+            <div class="dataInfo-tit">
+                <span></span>
+                采购信息
+            </div>
+            <table class="table table-bordered myinfoTable">
+                <tr>
+                    <td width="20%" class="myinfoTableKey" align="center">材料名称：</td>
+                    <td colspan="5" th:text="*{material.name}"></td>
+                </tr>
+                <tr>
+                    <td width="20%" class="myinfoTableKey" align="center">材料编号：</td>
+                    <td width="30%" th:text="*{material.code}"></td>
+                    <td width="20%" class="myinfoTableKey" align="center">材料总数：</td>
+                    <td width="30%" th:text="*{material.code}"></td>
+                </tr>
+                <tr>
+                    <td width="20%" class="myinfoTableKey" align="center">产品规格：</td>
+                    <td width="30%" th:text="*{material.standard}"></td>
+                    <td width="20%" class="myinfoTableKey" align="center">产品型号：</td>
+                    <td width="30%" th:text="*{material.model}"></td>
+                </tr>
+                <tr>
+                    <td width="20%" class="myinfoTableKey" align="center">材料单位：</td>
+                    <td width="30%" th:text="*{material.unit}"></td>
+                    <td width="20%" class="myinfoTableKey" align="center">材料单价：</td>
+                    <td width="30%" th:text="*{material.unitPrice + '元/' + material.unit}"></td>
+                </tr>
+                <tr>
+                    <td width="20%" class="myinfoTableKey" align="center">备注：</td>
+                    <td colspan="5" th:text="*{material.remark}"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div th:if="*{#strings.startsWith(code, 'SC')}">
+            <div class="dataInfo-tit">
+                <span></span>
+                采购信息
+            </div>
+            <table class="table table-bordered myinfoTable">
+                <tr>
+                    <td width="20%" class="myinfoTableKey" align="center">材料名称：</td>
+                    <td colspan="5" th:text="*{material.name}"></td>
+                </tr>
+                <tr>
+                    <td width="20%" class="myinfoTableKey" align="center">材料编号：</td>
+                    <td width="30%" th:text="*{material.code}"></td>
+                    <td width="20%" class="myinfoTableKey" align="center">材料总数：</td>
+                    <td width="30%" th:text="*{material.code}"></td>
+                </tr>
+                <tr>
+                    <td width="20%" class="myinfoTableKey" align="center">产品规格：</td>
+                    <td width="30%" th:text="*{material.standard}"></td>
+                    <td width="20%" class="myinfoTableKey" align="center">产品型号：</td>
+                    <td width="30%" th:text="*{material.model}"></td>
+                </tr>
+                <tr>
+                    <td width="20%" class="myinfoTableKey" align="center">材料单位：</td>
+                    <td width="30%" th:text="*{material.unit}"></td>
+                    <td width="20%" class="myinfoTableKey" align="center">材料单价：</td>
+                    <td width="30%" th:text="*{material.unitPrice + '元/' + material.unit}"></td>
+                </tr>
+                <tr>
+                    <td width="20%" class="myinfoTableKey" align="center">备注：</td>
+                    <td colspan="5" th:text="*{material.remark}"></td>
+                </tr>
+            </table>
+        </div>
+
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<script th:inline="javascript">
+
+    $(function () {
+        var state = [[${erpFactoryRecord.state}]];
+        var stateLabel = getStateLabel(state);
+        $("#state").text(stateLabel);
+    })
+
+</script>
+</body>
+</html>

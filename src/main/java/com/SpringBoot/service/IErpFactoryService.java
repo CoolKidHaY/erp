@@ -61,4 +61,11 @@ public interface IErpFactoryService extends IService<ErpFactory>
      * @return 结果
      */
     public int deleteErpFactoryById(Long id);
+
+    /**
+     * 修改仓库已使用容量
+     * @param increaseCapacity
+     * @return
+     */
+    int updateUsedCapacity(Long id, Long increaseCapacity);
 }

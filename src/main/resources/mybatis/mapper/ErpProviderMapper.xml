@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.SpringBoot.mapper.ErpProviderMapper">
+    
+    <resultMap type="ErpProvider" id="ErpProviderResult">
+        <result property="id"    column="id"    />
+        <result property="money"    column="money"    />
+        <result property="name"    column="name"    />
+        <result property="contacts"    column="contacts"    />
+        <result property="phoneNum"    column="phone_num"    />
+        <result property="email"    column="email"    />
+        <result property="remark"    column="remark"    />
+        <result property="type"    column="type"    />
+        <result property="fax"    column="fax"    />
+        <result property="telephone"    column="telephone"    />
+        <result property="address"    column="address"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+    </resultMap>
+
+    <sql id="selectErpProviderVo">
+        select id, money, name, contacts, phone_num, email, remark, type, fax, telephone, address, delete_flag from erp_provider
+    </sql>
+
+    <select id="selectErpProviderList" parameterType="ErpProvider" resultMap="ErpProviderResult">
+        <include refid="selectErpProviderVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="contacts != null  and contacts != ''"> and contacts like concat('%', #{contacts}, '%')</if>
+            <if test="phoneNum != null  and phoneNum != ''"> and phone_num like concat('%', #{phoneNum}, '%')</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="address != null  and address != ''"> and address like concat('%', #{address}, '%')</if>
+        </where>
+    </select>
+
+</mapper>

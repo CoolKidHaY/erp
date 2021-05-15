@@ -57,4 +57,10 @@ public class Constast {
      * 用户默认图片
      */
     public static final String DEFAULT_IMG_USER="/images/defaultUserTitle.jpg";
+
+    /**
+     * 仓库 出入库
+     */
+    public static final String FACTORY_INPUT = "入库";
+    public static final String FACTORY_OUTPUT = "出库";
 }

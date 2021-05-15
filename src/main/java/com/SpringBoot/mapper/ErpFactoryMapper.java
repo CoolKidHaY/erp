@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.SpringBoot.bean.ErpFactory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * 仓库Mapper接口
@@ -60,4 +62,11 @@ public interface ErpFactoryMapper extends BaseMapper<ErpFactory>
      * @return 结果
      */
     public int deleteErpFactoryByIds(String[] ids);
+
+    /**
+     * 修改仓库已使用容量
+     * @param increaseCapacity
+     * @return
+     */
+    int updateUsedCapacity(@Param("id") Long id, @PathVariable("increaseCapacity") Long increaseCapacity);
 }

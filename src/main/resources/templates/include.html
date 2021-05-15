@@ -14,6 +14,7 @@
 	<link th:href="@{/css/animate.css}" rel="stylesheet"/>
 	<link th:href="@{/css/style.css?v=20200903}" rel="stylesheet"/>
 	<link th:href="@{/ruoyi/css/ry-ui.css?v=4.6.0}" rel="stylesheet"/>
+	<link th:href="@{/ruoyi/css/ry-ui-order.css?v=4.6.0}" rel="stylesheet"/>
 </head>
 
 <!-- 通用JS -->
@@ -39,6 +40,46 @@
 	<script th:src="@{/libs/layui/layui.js}"></script>
 	<script th:src="@{/ruoyi/js/common.js?v=4.6.0}"></script>
 	<script th:src="@{/ruoyi/js/ry-ui.js?v=4.6.0}"></script>
+	<script th:src="@{/js/mustache.js}"></script>
+
+	<script>
+		function getStateLabel(state)
+		{
+			if (state == "NEW"){ return "创建完成"; }
+			//需求人员希望将“审核中”改为“待审核”
+			else if (state == "CHECKING"){ return "待审核"; }
+			//需求人员希望将“审核失败”改为“审核不通过”
+			else if (state == "CHECK_FAILED"){ return "审核不通过"; }
+			//需求人员希望将“审核成功”改为“审核通过”
+			else if (state == "CHECK_SUCCESS"){ return "审核通过"; }
+			else if (state == "PURCHASING"){ return "采购中"; }
+			else if (state == "PURCHASING_SUCCESS"){ return "采购完成"; }
+			else if (state == "PUTTING"){ return "入库中"; }
+			else if (state == "OUTING"){ return "出库中"; }
+			else if (state == "PUTTING_SUCCESS"){ return "入库完成"; }
+			else if (state == "OUTING_SUCCESS"){ return "出库完成"; }
+			else {
+				return "";
+			}
+		}
+
+		function getStateCss(state)
+		{
+			if (state == "NEW"){ return ";background-color: #1ab394;"; }
+			else if (state == "CHECKING"){ return ";background-color: #F08080;"; }
+			else if (state == "CHECK_FAILED"){ return ";background-color: #ed5565;"; }
+			else if (state == "CHECK_SUCCESS"){ return ";background-color: #00AE66;"; }
+			else if (state == "PURCHASING"){ return ";background-color: #8B658B;"; }
+			else if (state == "PURCHASING_SUCCESS"){ return ";background-color: #f8ac59;"; }
+			else if (state == "PUTTING"){ return ";background-color: #BA55D3;"; }
+			else if (state == "OUTING"){ return ";background-color: #FF69B4"; }
+			else if (state == "PUTTING_SUCCESS"){ return ";background-color: #E066FF;"; }
+			else if (state == "OUTING_SUCCESS"){ return ";background-color: #008B8B;"; }
+			else {
+				return "";
+			}
+		}
+	</script>
 </div>
 
 <!-- ztree树插件 -->
@@ -211,3 +252,4 @@
 <div th:fragment="bootstrap-table-print-js">
 	<script th:src="@{/libs/bootstrap-table/extensions/print/bootstrap-table-print.min.js?v=20200729}"></script>
 </div>
+

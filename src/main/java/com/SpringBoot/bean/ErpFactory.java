@@ -33,6 +33,10 @@ public class ErpFactory
     /** 备注 */
     private String principalName;
 
+    private Long totalCapacity;
+    private Long usedCapacity;
+    private Integer flag;
+
     /** 备注 */
     private String remark;
 

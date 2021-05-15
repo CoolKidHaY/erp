@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改采购')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-purchase-edit" th:object="${erpPurchase}">
+        <div class="dataInfo-tit">
+            <span></span>
+            采购详情
+        </div>
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">采购单号：</label>
+            <div class="col-sm-8">
+                <input id="pName" name="pName" th:field="*{orderNo}" class="form-control" type="text" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">采购金额：</label>
+            <div class="col-sm-8">
+                <input id="money" name="money" th:field="*{money}" class="form-control" type="text" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">采购人：</label>
+            <div class="col-sm-8">
+                <input id="purUserName" name="purUserName" th:field="*{purUserName}" class="form-control" type="text"
+                       onfocus="getUserList()">
+                <input id="purUserId" type="hidden" name="purUserId" th:field="*{purUserId}">
+            </div>
+        </div>
+
+        <div class="dataList" th:each="record,index : ${erpPurchase.itemList}">
+            <div class="dataInfo-tit">
+                <span></span>
+                采购项
+            </div>
+            <input th:id="'id' + ${index.index}" name="id" type="hidden" th:value="${record.id}">
+            <input th:id="'pCode' + ${index.index}" name="pCode" type="hidden" th:value="${record.pCode}">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">材料名称</label>
+                <div class="col-sm-8">
+                    <input th:id="'mName' + ${index.index}" name="mName" th:value="${record.mName}" class="form-control" type="text" onfocus="getAllMaterial(this.id)">
+                    <input th:id="'mCode' + ${index.index}" name="mCode" type="hidden" th:value="${record.mCode}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">材料单价</label>
+                <div class="col-sm-8">
+                    <input th:id="'unitPrice' + ${index.index}" name="unitPrice" th:value="${record.unitPrice}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">采购数量</label>
+                <div class="col-sm-8">
+                    <input th:id="'num' + ${index.index}" name="num" th:value="${record.num}" class="form-control" type="text" onchange="computeTotalPrice(this.id)" required number>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">总价</label>
+                <div class="col-sm-8">
+                    <input th:id="'totalPrice' + ${index.index}" name="totalPrice" th:value="${record.totalPrice}" class="form-control" type="text" readonly required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">供应商</label>
+                <div class="col-sm-8">
+                    <input th:id="'pName' + ${index.index}" name="pName" th:value="${record.pName}" type="text" class="form-control"
+                           onfocus="getAllProvider(this.id)">
+                    <input th:id="'pId' + ${index.index}" name="pId" th:value="${record.pId}" type="hidden">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var prefix = ctx + "business/purchase";
+    $("#form-purchase-edit").validate({
+        focusCleanup: true
+    });
+
+    var data = {};
+
+    function submitHandler(index, layero, state) {
+        data.itemList = [];
+        data.id = $("#id").val();
+        data.purUserName = $("#purUserName").val();
+        data.purUserId = $("#purUserId").val();
+        data.state = state;
+
+        $(".dataList").each(function (idx, item) {
+            let $item = $(item);
+
+            let dataItem = {};
+
+            dataItem.id = $item.find("[name='id']").val().trim();
+            dataItem.pCode = $item.find("[name='pCode']").val().trim();
+            dataItem.mCode = $item.find("[name='mCode']").val().trim();
+            dataItem.mName = $item.find("[name='mName']").val().trim();
+            dataItem.unitPrice = $item.find("[name='unitPrice']").val().trim();
+            dataItem.num = $item.find("[name='num']").val().trim();
+            dataItem.totalPrice = $item.find("[name='totalPrice']").val().trim();
+            dataItem.pId = $item.find("[name='pId']").val().trim();
+            dataItem.pName = $item.find("[name='pName']").val().trim();
+
+            data.itemList.push(dataItem);
+        });
+
+        if ($.validate.form()) {
+            $.ajax({
+                url: prefix + "/edit",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                beforeSend: function () {
+                    $.modal.loading("正在处理中，请稍后...");
+                    $.modal.disable();
+                },
+                success: function (result) {
+                    $.operate.successCallback(result);
+                },
+                error: function () {
+                    $.modal.alertError('保存异常，请联系管理员！');
+                }
+            });
+        }
+    }
+
+    /** 采购部成员列表 */
+    function getUserList() {
+        openFull('采购人', prefix + '/userList');
+    }
+
+    /** 采购材料弹窗 */
+    var className = 0;
+    function getAllMaterial(data) {
+        className = data;
+        openFull('全部材料', prefix + '/allMaterial');
+    }
+
+    /** 供应商弹窗 */
+    function getAllProvider(data) {
+        className = data;
+        openFull('供应商', prefix + '/allProvider');
+    }
+
+    function openFull(title, url, width, height, callback, callback1) {
+        //如果是移动端，就使用自适应大小弹窗
+        if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)) {
+            width = 'auto';
+            height = 'auto';
+        }
+        if ($.common.isEmpty(title)) {
+            title = false;
+        }
+        if ($.common.isEmpty(url)) {
+            url = "/404.html";
+        }
+        if ($.common.isEmpty(width)) {
+            width = 800;
+        }
+        if ($.common.isEmpty(height)) {
+            height = ($(window).height() - 50);
+        }
+        var index = layer.open({
+            type: 2,
+            area: [width + 'px', height + 'px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: title,
+            content: url,
+            // 弹层外区域关闭
+            shadeClose: false
+        });
+        layer.full(index);
+    }
+
+    /** 采购人 */
+    function setPurchase(id, name) {
+        var uId = id.split(",")[0];
+        var uName = id.split(",")[1];
+        $("#purUserName").prop("value", uName);
+        $("#purUserId").prop("value", uId)
+    }
+
+    /** 格式化材料 */
+    var unitPrice;  // 材料单价
+    function setMaterial(id, name){
+        var index = className.substr(className.length-1,1)
+        var mId = id.split(",")[0];
+        var mName = id.split(",")[1];
+        var price = id.split(",")[2];
+        // 获取原本材料的总价
+        var oldTotalPrice = $("#totalPrice"+index).val();
+        // 修改材料和材料单价
+        $("#"+className).prop("value", mName);
+        $("#"+className).next().prop("value", mId)
+        $("#unitPrice" + index).prop("value", price);
+        // 修改商品项的总价
+        var totalPrice = parseFloat(price) * $("#num" + index).val();
+        $("#totalPrice" + index).val(totalPrice)
+        // 修改此次采购的计划的总价
+        var money = $("#money").val();
+        money = (parseFloat(money) - parseFloat(oldTotalPrice) + parseFloat(totalPrice)).toFixed(2);
+        $("#money").val(money)
+    }
+
+    /** 供应商 */
+    function setProvider(id) {
+        console.log(id);
+        var pId = id.split(",")[0];
+        var pName = id.split(",")[1];
+        $("#" + className).prop("value", pName);
+        $("#" + className).next().prop("value", pId)
+    }
+
+    /** 计算总价 */
+    function computeTotalPrice(data) {
+        var index = data.substr(data.length-1,1);
+        // 获取数量
+        var number = $("#" + data).val();
+        // 获取单价
+        var unitPrice = $("#unitPrice" + index).val();
+        // 计算总价
+        var totalPrice = (parseFloat(unitPrice) * number).toFixed(2);
+        // 获取原本材料的总价
+        var oldTotalPrice = $("#totalPrice" + index).val();
+        // 更新材料总价
+        $("#totalPrice" + index).prop("value", totalPrice);
+
+        // 修改此次采购计划的总价
+        var money = $("#money").val();
+        var finalMoney = parseFloat(money) - parseFloat(oldTotalPrice) + parseFloat(totalPrice);
+        $("#money").val(finalMoney);
+    }
+</script>
+</body>
+</html>

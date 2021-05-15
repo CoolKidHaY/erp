@@ -12,6 +12,7 @@ import com.SpringBoot.mapper.ErpMaterialCategoryMapper;
 import com.SpringBoot.service.IErpMaterialCategoryService;
 import com.SpringBoot.utils.Ztree;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -38,7 +39,11 @@ public class ErpMaterialCategoryServiceImpl extends ServiceImpl<ErpMaterialCateg
     @Override
     public ErpMaterialCategory selectErpMaterialCategoryById(Long id)
     {
-        return erpMaterialCategoryMapper.selectErpMaterialCategoryById(id);
+        ErpMaterialCategory erpMaterialCategory = this.getBaseMapper().selectById(id);
+        // 查询父菜单名称
+        ErpMaterialCategory one = this.query().eq("id", erpMaterialCategory.getParentId()).select("name").one();
+        erpMaterialCategory.setParentName(one.getName());
+        return erpMaterialCategory;
     }
 
     /**
@@ -134,9 +139,13 @@ public class ErpMaterialCategoryServiceImpl extends ServiceImpl<ErpMaterialCateg
         return ztrees;
     }
 
+    /**
+     * id查询种类名称
+     * @param id
+     * @return
+     */
     @Override
     public String getNameById(Long id) {
-
         return erpMaterialCategoryMapper.getNameById(id);
     }
 }

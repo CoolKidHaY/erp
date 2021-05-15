@@ -16,13 +16,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectErpFactoryMaterialVo">
-        select id, m_id, `type`, `name`, f_id, total, state, unit_price, remark, delete_flag from erp_factory_material
+        select id, code, `type`, `name`, f_id, total, state, unit_price, remark, delete_flag from erp_factory_material
     </sql>
 
     <select id="selectErpFactoryMaterialList" parameterType="ErpFactoryMaterial" resultMap="ErpFactoryMaterialResult">
         <include refid="selectErpFactoryMaterialVo"/>
         <where>  
-            <if test="mId != null "> and m_id = #{mId}</if>
+            <if test="code != null and code != ''"> and code = #{code}</if>
             <if test="fId != null "> and f_id = #{fId}</if>
             <if test="type != null "> and type = #{type}</if>
             <if test="name != null and name != ''"> and name = #{name}</if>

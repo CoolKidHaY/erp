@@ -3,12 +3,15 @@ package com.SpringBoot.controller;
 import java.util.List;
 
 import com.SpringBoot.annotation.Log;
+import com.SpringBoot.bean.ErpFactoryMaterial;
 import com.SpringBoot.bean.ErpMaterial;
 import com.SpringBoot.common.LayuiJson;
 import com.SpringBoot.enums.BusinessType;
+import com.SpringBoot.service.IErpFactoryMaterialService;
 import com.SpringBoot.service.IErpMaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +33,9 @@ public class ErpMaterialController
 
     @Autowired
     private IErpMaterialService erpMaterialService;
+
+    @Autowired
+    private IErpFactoryMaterialService erpFactoryMaterialService;
 
 //    @RequiresPermissions("business:material:view")
     @GetMapping()
@@ -119,4 +125,18 @@ public class ErpMaterialController
     {
         return LayuiJson.toAjax(erpMaterialService.deleteErpMaterialByIds(ids));
     }
+
+
+    /**
+     * 查询材料库存
+     * @param id
+     * @return
+     */
+    @GetMapping("/stock/{id}")
+    public String selectStock(@PathVariable("id") Long id, Model mmap){
+//        List<ErpFactoryMaterial> list = erpFactoryMaterialService.selectStockByMid(id);
+        mmap.addAttribute("mId", id);
+        return "/stock";
+    }
+
 }

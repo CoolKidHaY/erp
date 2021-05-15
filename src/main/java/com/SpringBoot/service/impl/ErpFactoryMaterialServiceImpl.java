@@ -7,6 +7,7 @@ import cn.hutool.core.convert.Convert;
 import com.SpringBoot.bean.ErpFactoryMaterial;
 import com.SpringBoot.mapper.ErpFactoryMaterialMapper;
 import com.SpringBoot.service.IErpFactoryMaterialService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -94,4 +95,15 @@ public class ErpFactoryMaterialServiceImpl extends ServiceImpl<ErpFactoryMateria
     {
         return this.getBaseMapper().deleteById(id);
     }
+
+//    /**
+//     * 材料id查询库存
+//     * @param id
+//     * @return
+//     */
+//    @Override
+//    public List<ErpFactoryMaterial> selectStockByMid(Long id) {
+//        List<ErpFactoryMaterial> list = this.getBaseMapper().selectList(new QueryWrapper<ErpFactoryMaterial>().eq("m_id", id));
+//        return list;
+//    }
 }

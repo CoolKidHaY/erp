@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('采购详情')" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-activity-edit" th:object="${erpPurchase}">
+        <table class="table table-bordered" style="margin-top: 5px;">
+            <div class="dataInfo-tit">
+                <span></span>
+                采购详情
+            </div>
+            <tr>
+                <td width="20%" class="myinfoTableKey" align="center">采购单号</td>
+                <td width="30%" th:text="*{orderNo}"></td>
+                <td width="20%" class="myinfoTableKey" align="center">采购金额</td>
+                <td width="30%" th:text="*{money}"></td>
+            </tr>
+            <tr>
+                <td width="20%" class="myinfoTableKey" align="center">创建人</td>
+                <td width="30%" th:text="*{createBy}"></td>
+                <td width="20%" class="myinfoTableKey" align="center">创建时间</td>
+                <td width="30%" th:text="*{#dates.format(createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+            <tr>
+                <td width="20%" class="myinfoTableKey" align="center">修改人</td>
+                <td width="30%" th:text="*{updateBy} == null ? '暂未修改' : *{updateBy}"></td>
+                <td width="20%" class="myinfoTableKey" align="center">修改时间</td>
+                <td width="30%" th:text="*{#dates.format(updateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+            <tr>
+                <td width="20%" class="myinfoTableKey" align="center">采购开始时间</td>
+                <td width="30%" th:text="*{purBeginTime} == null ? '采购未开始' : *{#dates.format(purBeginTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td width="20%" class="myinfoTableKey" align="center">采购结束时间</td>
+                <td width="30%" th:text="*{purEndTime} == null ? '采购未结束' : *{#dates.format(purEndTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+            <tr>
+                <td width="20%" class="myinfoTableKey" align="center">采购人</td>
+                <td width="30%" th:text="*{purUserName}"></td>
+                <td width="20%" class="myinfoTableKey" align="center">采购状态</td>
+                <td width="30%" id="state"></td>
+            </tr>
+        </table>
+
+        <table class="table table-bordered" style="margin-top: 5px;" th:each="record : *{itemList}">
+            <div class="dataInfo-tit">
+                <span></span>
+                采购项
+            </div>
+            <tr>
+                <td width="20%" class="myinfoTableKey" align="center">材料名称</td>
+                <td width="30%" th:text="${record.mName}"></td>
+                <td width="20%" class="myinfoTableKey" align="center">单价</td>
+                <td width="30%" th:text="${record.unitPrice}"></td>
+            </tr>
+
+            <tr>
+                <td width="20%" class="myinfoTableKey" align="center">采购数量</td>
+                <td width="30%" th:text="${record.num}"></td>
+                <td width="20%" class="myinfoTableKey" align="center">总价</td>
+                <td width="30%" th:text="${record.totalPrice}"></td>
+            </tr>
+
+            <tr>
+                <td width="20%" class="myinfoTableKey" align="center">供应商</td>
+                <td colspan="5" th:text="${record.pName}"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+</body>
+<script>
+    $(function () {
+        var state = '[[${erpPurchase.state}]]';
+        $("#state").text(getStateLabel(state))
+    })
+</script>
+
+</html>

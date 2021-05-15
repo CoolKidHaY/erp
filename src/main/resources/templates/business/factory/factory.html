@@ -26,6 +26,7 @@
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
                             </li>
+
                         </ul>
                     </div>
                 </form>
@@ -79,8 +80,20 @@
                     title: '仓库地址'
                 },
                 {
-                    field: 'sort',
-                    title: '排序'
+                    field: 'totalCapacity',
+                    title: '总容量'
+                },
+                {
+                    field: 'usedCapacity',
+                    title: '已使用容量'
+                },
+                {
+                    field: 'flag',
+                    title: '使用率',
+                    formatter: function (value, row, index) {
+                        var flag = ((parseFloat(row.usedCapacity) / parseFloat(row.totalCapacity).toFixed(4)) * 100);
+                        return '<span class="badge badge-info">' + flag + '\%' + '</span>'
+                    }
                 },
                 {
                     field: 'remark',

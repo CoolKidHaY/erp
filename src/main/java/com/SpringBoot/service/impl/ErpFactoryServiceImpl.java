@@ -94,4 +94,21 @@ public class ErpFactoryServiceImpl extends ServiceImpl<ErpFactoryMapper, ErpFact
     {
         return this.getBaseMapper().deleteById(id);
     }
+
+    /**
+     * 修改仓库已使用容量
+     * @param increaseCapacity
+     * @return
+     */
+    @Override
+    public int updateUsedCapacity(Long id, Long increaseCapacity) {
+        ErpFactory erpFactory = erpFactoryMapper.selectById(id);
+        Long totalCapacity = erpFactory.getTotalCapacity();
+        Long usedCapacity = erpFactory.getUsedCapacity();
+        if (totalCapacity < usedCapacity + increaseCapacity){
+            return -1;
+        } else {
+            return erpFactoryMapper.updateUsedCapacity(id,increaseCapacity);
+        }
+    }
 }

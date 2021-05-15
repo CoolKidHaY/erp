@@ -13,19 +13,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="standard"    column="standard"    />
         <result property="model"    column="model"    />
         <result property="unit"    column="unit"    />
+        <result property="cost"    column="cost"    />
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
+        <result property="unitPrice"    column="unit_price"    />
         <result property="remark"    column="remark"    />
         <result property="deleteFlag"    column="delete_flag"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
     </resultMap>
 
     <sql id="selectErpMaterialVo">
-        select id, c_id, code, name, total, standard, model, unit, create_by, create_time, remark, delete_flag from erp_material
+        select id, c_id, code, name, total, standard, model, unit, cost, create_by, create_time, unit_price, remark, delete_flag, update_by, update_time from erp_material
     </sql>
-
     <select id="selectErpMaterialList" parameterType="ErpMaterial" resultMap="ErpMaterialResult">
         <include refid="selectErpMaterialVo"/>
-        <where>  
+        <where>
             <if test="cId != null "> and c_id = #{cId}</if>
             <if test="code != null  and code != ''"> and code = #{code}</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
@@ -33,6 +36,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="standard != null  and standard != ''"> and standard = #{standard}</if>
             <if test="model != null  and model != ''"> and model = #{model}</if>
             <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="cost != null "> and cost = #{cost}</if>
+            <if test="unitPrice != null "> and unit_price = #{unitPrice}</if>
             <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
         </where>
     </select>

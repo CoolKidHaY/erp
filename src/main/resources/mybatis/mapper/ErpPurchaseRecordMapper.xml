@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.SpringBoot.mapper.ErpPurchaseRecordMapper">
+    
+    <resultMap type="ErpPurchaseRecord" id="ErpPurchaseRecordResult">
+        <result property="id"    column="id"    />
+        <result property="pCode"    column="p_code"    />
+        <result property="mCode"    column="m_code"    />
+        <result property="num"    column="num"    />
+        <result property="totalPrice"    column="total_price"    />
+        <result property="unit"    column="unit"    />
+        <result property="pId"    column="p_id"    />
+        <result property="pName"    column="p_name"    />
+    </resultMap>
+
+    <sql id="selectErpPurchaseRecordVo">
+        select id, p_code, m_code, m_name, unit_price, num, total_price, unit, p_id, p_name from erp_purchase_record
+    </sql>
+
+    <select id="selectErpPurchaseRecordList" parameterType="ErpPurchaseRecord" resultMap="ErpPurchaseRecordResult">
+        <include refid="selectErpPurchaseRecordVo"/>
+        <where>  
+            <if test="pCode != null  and pCode != ''"> and p_code = #{pCode}</if>
+            <if test="mCode != null "> and m_code = #{mCode}</if>
+            <if test="num != null "> and num = #{num}</if>
+            <if test="totalPrice != null "> and total_price = #{totalPrice}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="pId != null "> and p_id = #{pId}</if>
+            <if test="pName != null  and pName != ''"> and p_name like concat('%', #{pName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectErpPurchaseRecordById" parameterType="Long" resultMap="ErpPurchaseRecordResult">
+        <include refid="selectErpPurchaseRecordVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertErpPurchaseRecord" parameterType="ErpPurchaseRecord">
+        insert into erp_purchase_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="pCode != null and pCode != ''">p_code,</if>
+            <if test="mCode != null">m_code,</if>
+            <if test="num != null">num,</if>
+            <if test="totalPrice != null">total_price,</if>
+            <if test="unit != null">unit,</if>
+            <if test="pId != null">p_id,</if>
+            <if test="pName != null">p_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="pCode != null and pCode != ''">#{pCode},</if>
+            <if test="mCode != null">#{mCode},</if>
+            <if test="num != null">#{num},</if>
+            <if test="totalPrice != null">#{totalPrice},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="pId != null">#{pId},</if>
+            <if test="pName != null">#{pName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateErpPurchaseRecord" parameterType="ErpPurchaseRecord">
+        update erp_purchase_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pCode != null and pCode != ''">p_code = #{pCode},</if>
+            <if test="mCode != null">m_code = #{mCode},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="totalPrice != null">total_price = #{totalPrice},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="pId != null">p_id = #{pId},</if>
+            <if test="pName != null">p_name = #{pName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteErpPurchaseRecordById" parameterType="Long">
+        delete from erp_purchase_record where id = #{id}
+    </delete>
+
+    <delete id="deleteErpPurchaseRecordByIds" parameterType="String">
+        delete from erp_purchase_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
