@@ -3,7 +3,11 @@ package com.SpringBoot.service.impl;
 import com.SpringBoot.bean.Notice;
 import com.SpringBoot.mapper.NoticeMapper;
 import com.SpringBoot.service.NoticeService;
+import com.SpringBoot.vo.NoticeVo;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,38 +17,28 @@ import java.util.List;
 @Service
 public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> implements NoticeService {
 
-	@Autowired
-	private NoticeMapper noticeMapper;
-	
-
-	public List<Notice> select(String title, String opername,Integer index,Integer limit) {
-		List<Notice> notice = noticeMapper.select(title, opername, index, limit);
-		return notice;
+	@Override
+	public Page<Notice> selectNoticePage(NoticeVo vo) {
+		QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
+		queryWrapper.like( StringUtils.isNotBlank(vo.getOperName()), "oper_name", vo.getOperName())
+				.like(StringUtils.isNotBlank(vo.getTitle()), "title", vo.getTitle());
+		return this.getBaseMapper().selectPage(new Page<>(vo.getPageNum(), vo.getPageSize()),queryWrapper);
 	}
 
-
-	public void delect(Integer id) {
-		noticeMapper.delect(id);
+	@Override
+	public int insertNotice(Notice notice) {
+		notice.setCreateTime(new Date());
+		return this.getBaseMapper().insert(notice);
 	}
 
-
-	public Notice selectById(Integer id) {
-		Notice notice = noticeMapper.selectById(id);
-		return notice;
+	@Override
+	public int deleteNoticeById(Long id) {
+		return this.getBaseMapper().deleteById(id);
 	}
 
-
-	public void update(Integer id, String content) {
-		// TODO 自动生成的方法存根
-		noticeMapper.update(id, content);
+	@Override
+	public int batchDeleteNotice(NoticeVo vo) {
+		return this.getBaseMapper().deleteBatchIds(vo.getIds());
 	}
-
-
-	public void insert(String title, String content, Date createtime, String opername) {
-		// TODO 自动生成的方法存根
-		noticeMapper.insert(title, content, createtime, opername);
-	}
-
-	
 
 }

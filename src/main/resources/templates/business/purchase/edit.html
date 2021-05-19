@@ -57,7 +57,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">采购数量</label>
                 <div class="col-sm-8">
-                    <input th:id="'num' + ${index.index}" name="num" th:value="${record.num}" class="form-control" type="text" onchange="computeTotalPrice(this.id)" required number>
+                    <input th:id="'num' + ${index.index}" name="num" th:value="${record.num}" class="form-control gt:0 digits" type="text" onchange="computeTotalPrice(this.id)" required number>
                 </div>
             </div>
 

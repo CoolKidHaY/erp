@@ -34,7 +34,7 @@
 		join sys_user_role ur on ur.rid = r.id
 		join sys_user u on u.id = ur.uid
 		<where>
-			u.id = #{id} and m.delete_flag = 0
+			u.id = #{id} and m.delete_flag = 0 and m.visible = 0
 		</where>
 	</select>
     <select id="selectRolesByUid" resultType="java.lang.String">

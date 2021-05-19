@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('活动审核')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-unit-edit" th:object="${erpProduceRecord}">
+        <input name="id" th:field="*{id}" type="hidden">
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label">审核状态：</label>
+            <div class="col-sm-6">
+                <label class="btn btn-success btn-xs">
+                    <input onclick="checkFun(1)" class="control-label" type="radio" name="state" value="CHECK_SUCCESS" checked="checked">
+                    通过
+                </label>
+                <label class="btn btn-danger btn-xs">
+                    <input onclick="checkFun(2)" class="control-label" type="radio" name="state" value="CHECK_FAILED">
+                    不通过
+                </label>
+            </div>
+        </div>
+        <div id="reasonDiv" class="form-group" style="display: none">
+            <label class="col-sm-4 control-label">退回原因：</label>
+            <div class="col-sm-6">
+                <textarea name="reason" class="form-control" required></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<script type="text/javascript">
+    var prefix = ctx + "business/produceRecord";
+
+    function checkFun(val){
+        if (val == 2){
+            $("#reasonDiv").show()
+        }else{
+            $("#reasonDiv").hide()
+        }
+    }
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/check", $('#form-unit-edit').serialize());
+        }
+    }
+</script>
+</body>
+</html>

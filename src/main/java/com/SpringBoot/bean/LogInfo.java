@@ -36,6 +36,6 @@ public class  LogInfo {
     private LocalDateTime loginTime;
 
     @TableLogic(value = "0", delval = "1")
-    private Integer delete_flag;
+    private Integer deleteFlag;
 	
 }

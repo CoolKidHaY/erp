@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改生产记录')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-record-edit" th:object="${erpProduceRecord}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">产品名称：</label>
+                <div class="col-sm-8">
+                    <input id="pName" name="pName" th:field="*{pName}" class="form-control" type="text" onfocus="getProductList()">
+                    <input id="pCode" name="pCode" th:field="*{pCode}" class="form-control" type="hidden" >
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">数量：</label>
+                <div class="col-sm-8">
+                    <input name="num" th:field="*{num}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">预计生产花费时间：</label>
+                <div class="col-sm-8">
+                    <input name="costDay" th:field="*{costDay}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/produceRecord";
+        $("#form-record-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-record-edit').serialize());
+            }
+        }
+
+        function getProductList() {
+            openFull('产品列表', prefix + '/produceList');
+        }
+
+        function openFull(title, url, width, height, callback, callback1) {
+            //如果是移动端，就使用自适应大小弹窗
+            if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)) {
+                width = 'auto';
+                height = 'auto';
+            }
+            if ($.common.isEmpty(title)) {
+                title = false;
+            }
+            if ($.common.isEmpty(url)) {
+                url = "/404.html";
+            }
+            if ($.common.isEmpty(width)) {
+                width = 800;
+            }
+            if ($.common.isEmpty(height)) {
+                height = ($(window).height() - 50);
+            }
+            var index = layer.open({
+                type: 2,
+                area: [width + 'px', height + 'px'],
+                fix: false,
+                //不固定
+                maxmin: true,
+                shade: 0.3,
+                title: title,
+                content: url,
+                // 弹层外区域关闭
+                shadeClose: false
+            });
+            layer.full(index);
+        }
+
+        /** 产品 */
+        function setProduce(id, name) {
+            var pCode = id.split(",")[0];
+            var pName = id.split(",")[1];
+            $("#pName").prop("value", pName);
+            $("#pCode").prop("value", pCode)
+        }
+    </script>
+</body>
+</html>

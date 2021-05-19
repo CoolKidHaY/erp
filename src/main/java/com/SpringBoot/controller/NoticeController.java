@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import com.SpringBoot.service.impl.NoticeServiceImpl;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,40 +37,33 @@ public class NoticeController {
     
     /**
      * 公告的查询
-     * @param noticeVo
+     * @param vo
      * @return
      */
     @RequestMapping("loadAllNotice")
-    public LayuiJson<Notice> loadAllNotice(String title,String opername
-    		,Integer page,Integer limit){
-    	
-    	int index=(page-1)*limit;
-    	List<Notice> data = noticeService.select(title, opername, index, limit);
-		layuiJson.setCode(0);
-		layuiJson.setTotal(1000l);
-		layuiJson.setRows(data);
-
-		return layuiJson;
-
+    public LayuiJson<Notice> loadAllNotice(NoticeVo vo){
+        Page<Notice> page = noticeService.selectNoticePage(vo);
+		return new LayuiJson<>(page.getRecords(), page.getTotal(), 0);
     }
 
     /**
      * 添加公告
-     * @param noticeVo
+     * @param notice
      * @return
      */
     @RequestMapping("addNotice")
-    public ResultObj addNotice(String title,String content){
+    public LayuiJson addNotice(Notice notice){
     	
     	try {
     		org.apache.shiro.subject.Subject subject = SecurityUtils.getSubject();
     		Session session = subject.getSession();
-    		String  opername = session.getAttribute("username").toString();
-    		noticeService.insert(title, content,new Date(), opername);
-    		return ResultObj.ADD_SUCCESS;
+    		String  operName = session.getAttribute("username").toString();
+    		notice.setOperName(operName);
+    		int row = noticeService.insertNotice(notice);
+    		return LayuiJson.toAjax(row);
     	}catch (Exception e) {
             e.printStackTrace();
-            return ResultObj.ADD_ERROR;
+            return LayuiJson.error("添加失败，请联系管理员");
         }
         	
           
@@ -89,39 +83,33 @@ public class NoticeController {
 
     /**
      * 删除公告
-     * @param noticeVo
+     * @param id
      * @return
      */
     @RequestMapping("deleteNotice")
-    public ResultObj deleteNotice(Integer id){
+    public LayuiJson deleteNotice(Long id){
         try {
-            noticeService.delect(id);
-            return ResultObj.DELETE_SUCCESS;
+            int row = noticeService.deleteNoticeById(id);
+            return LayuiJson.toAjax(row);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultObj.DELETE_ERROR;
+            return LayuiJson.error("操作失败，请联系管理员");
         }
     }
 
     /**
      * 批量删除公告
-     * @param noticeVo
+     * @param vo
      * @return
      */
     @RequestMapping("batchDeleteNotice")
-    public ResultObj batchDeleteNotice(NoticeVo noticeVo){
+    public LayuiJson batchDeleteNotice(NoticeVo vo){
         try {
-        	List<Integer> idList = new ArrayList<Integer>();
-            for (Integer id : noticeVo.getIds()) {
-                idList.add(id);
-            }
-            for(Integer id :idList) {
-            	noticeService.delect(id);
-            }
-            return ResultObj.DELETE_SUCCESS;
+        	int row = noticeService.batchDeleteNotice(vo);
+            return LayuiJson.toAjax(row);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultObj.DELETE_ERROR;
+            return LayuiJson.error("操作失败，请联系管理员");
         }
     }
 

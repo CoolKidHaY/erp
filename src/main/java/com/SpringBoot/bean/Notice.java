@@ -1,10 +1,13 @@
 package com.SpringBoot.bean;
 
-import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
@@ -18,15 +21,19 @@ import lombok.NoArgsConstructor;
 @TableName("sys_notice")
 public class Notice {
 
-	private Integer id;
+    @TableId(type = IdType.AUTO)
+	private Long id;
 
     private String title;
 
     private String content;
 
-    private Date createtime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
 
-    private String opername;
+    private String operName;
 
-	
+    @TableLogic(value = "0", delval = "1")
+    private Integer deleteFlag;
 }

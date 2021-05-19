@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.IdUtil;
 import com.SpringBoot.bean.ErpMaterial;
 import com.SpringBoot.bean.User;
 import com.SpringBoot.mapper.ErpMaterialMapper;
@@ -65,6 +66,11 @@ public class ErpMaterialServiceImpl extends ServiceImpl<ErpMaterialMapper, ErpMa
         User user = (User) subject.getPrincipal();
         erpMaterial.setCreateBy(user.getName());
         erpMaterial.setCreateTime(new Date());
+        // 生成材料编号
+        StringBuilder sb = new StringBuilder("CL");
+        String id = IdUtil.objectId();
+        sb.append(id);
+        erpMaterial.setCode(sb.toString());
         return this.getBaseMapper().insert(erpMaterial);
     }
 

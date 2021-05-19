@@ -1,6 +1,7 @@
 package com.SpringBoot.service.impl;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.IdUtil;
 import com.SpringBoot.bean.ErpProduce;
 import com.SpringBoot.bean.User;
 import com.SpringBoot.mapper.ErpProduceMapper;
@@ -16,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 材料Service业务层处理
+ * 产品Service业务层处理
  * 
  * @author ruoyi
  * @date 2021-04-21
@@ -28,10 +29,10 @@ public class ErpProduceServiceImpl extends ServiceImpl<ErpProduceMapper, ErpProd
     private ErpProduceMapper erpProduceMapper;
 
     /**
-     * 查询材料
+     * 查询产品
      * 
-     * @param id 材料ID
-     * @return 材料
+     * @param id 产品ID
+     * @return 产品
      */
     @Override
     public ErpProduce selectErpProduceById(Long id)
@@ -41,10 +42,10 @@ public class ErpProduceServiceImpl extends ServiceImpl<ErpProduceMapper, ErpProd
     }
 
     /**
-     * 查询材料列表
+     * 查询产品列表
      * 
-     * @param erpProduce 材料
-     * @return 材料
+     * @param erpProduce 产品
+     * @return 产品
      */
     @Override
     public List<ErpProduce> selectErpProduceList(ErpProduce erpProduce)
@@ -53,9 +54,9 @@ public class ErpProduceServiceImpl extends ServiceImpl<ErpProduceMapper, ErpProd
     }
 
     /**
-     * 新增材料
+     * 新增产品
      * 
-     * @param erpProduce 材料
+     * @param erpProduce 产品
      * @return 结果
      */
     @Override
@@ -65,13 +66,18 @@ public class ErpProduceServiceImpl extends ServiceImpl<ErpProduceMapper, ErpProd
         User user = (User) subject.getPrincipal();
         erpProduce.setCreateBy(user.getName());
         erpProduce.setCreateTime(new Date());
+        // 生成产品编号
+        StringBuilder sb = new StringBuilder("CP");
+        String id = IdUtil.objectId();
+        sb.append(id);
+        erpProduce.setCode(sb.toString());
         return this.getBaseMapper().insert(erpProduce);
     }
 
     /**
-     * 修改材料
+     * 修改产品
      * 
-     * @param erpProduce 材料
+     * @param erpProduce 产品
      * @return 结果
      */
     @Override
@@ -85,7 +91,7 @@ public class ErpProduceServiceImpl extends ServiceImpl<ErpProduceMapper, ErpProd
     }
 
     /**
-     * 删除材料对象
+     * 删除产品对象
      * 
      * @param ids 需要删除的数据ID
      * @return 结果
@@ -97,9 +103,9 @@ public class ErpProduceServiceImpl extends ServiceImpl<ErpProduceMapper, ErpProd
     }
 
     /**
-     * 删除材料信息
+     * 删除产品信息
      * 
-     * @param id 材料ID
+     * @param id 产品ID
      * @return 结果
      */
     @Override

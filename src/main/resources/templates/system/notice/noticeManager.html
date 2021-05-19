@@ -128,13 +128,25 @@
             , title: '公告数据表'
             , height: 'full-220'
             , page: true
-            , cols: [
+            ,
+            request: {
+                pageName: "pageNum",
+                limitName: "pageSize"
+            },
+            response: {
+                statusName: 'code', //状态字段名称
+                statusCode: '0', //状态字段成功值
+                msgName: 'msg', //消息字段
+                countName: 'total',
+                dataName: "rows"
+            },
+            cols: [
                 [
                     {type: 'checkbox', fixed: 'left'}
                     , {field: 'id', title: 'ID', align: 'center'}
                     , {field: 'title', title: '标题', align: 'center'}
-                    , {field: 'opername', title: '发布人', align: 'center'}
-                    , {field: 'createtime', title: '发布时间', align: 'center'}
+                    , {field: 'operName', title: '发布人', align: 'center'}
+                    , {field: 'createTime', title: '发布时间', align: 'center'}
                     , {fixed: 'right', title: '操作', toolbar: '#noticeRowBar', align: 'center'}
                 ]
             ]
@@ -175,6 +187,7 @@
                     username: ''
                     , title: ''
                 });
+                tableIns.reload();
                 //删除
             } else if (layEvent === 'delete') {
                 deleteNotice(data);
@@ -201,13 +214,7 @@
                 type: 2,
                 maxmin: true,
                 area: ['800px', '400px'],
-                content: '/sys/toAddOrUpdate?' + parseParams(data),
-                // success: function (layero, index) {
-                //     var body = layer.getChildFrame('body', index);
-                //     body.find('[name="id"]').val(data.id);
-                //     body.find('[name="title"]').val(data.title);
-                //     body.find('[name="content"]').text(data.content);
-                // }
+                content: '/sys/toAddOrUpdate?' + parseParams(data)
             });
         }
 
@@ -215,7 +222,7 @@
         function deleteNotice(data) {
             layer.confirm('你确定要删除【' + data.title + '】这条公告吗?', {icon: 3, title: '提示'}, function (index) {
                 $.post("/notice/deleteNotice", {id: data.id}, function (res) {
-                    if (res.code == 200) {
+                    if (res.code == 0) {
                         tableIns.reload();
                     }
                     layer.msg(res.msg);
@@ -241,7 +248,7 @@
                         }
                     })
                     $.post("/notice/batchDeleteNotice", ids, function (res) {
-                        if (res.code == 200) {
+                        if (res.code == 0) {
                             tableIns.reload();
                         }
                         layer.msg(res.msg);

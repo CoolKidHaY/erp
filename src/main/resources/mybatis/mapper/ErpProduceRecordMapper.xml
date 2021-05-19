@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.SpringBoot.mapper.ErpProduceRecordMapper">
+    
+    <resultMap type="ErpProduceRecord" id="ErpProduceRecordResult">
+        <result property="id"    column="id"    />
+        <result property="pCode"    column="p_code"    />
+        <result property="code"    column="code"    />
+        <result property="num"    column="num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="costDay"    column="cost_day"    />
+        <result property="realCostDay"    column="real_cost_day"    />
+        <result property="state"    column="state"    />
+        <result property="auditBy"    column="audit_by"    />
+        <result property="reason"    column="reason"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+    </resultMap>
+
+    <sql id="selectErpProduceRecordVo">
+        select id, p_code, code, num, create_by, create_time, update_by, update_time, cost_day, real_cost_day, state, audit_by, reason, delete_flag from erp_produce_record
+    </sql>
+
+    <select id="selectErpProduceRecordList" parameterType="ErpProduceRecord" resultMap="ErpProduceRecordResult">
+        <include refid="selectErpProduceRecordVo"/>
+        <where>  
+            <if test="pCode != null  and pCode != ''"> and p_code = #{pCode}</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="num != null "> and num = #{num}</if>
+            <if test="state != null  and state != ''"> and state = #{state}</if>
+        </where>
+    </select>
+    
+    <select id="selectErpProduceRecordById" parameterType="Long" resultMap="ErpProduceRecordResult">
+        <include refid="selectErpProduceRecordVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertErpProduceRecord" parameterType="ErpProduceRecord">
+        insert into erp_produce_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="pCode != null">p_code,</if>
+            <if test="code != null">code,</if>
+            <if test="num != null">num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="costDay != null">cost_day,</if>
+            <if test="realCostDay != null">real_cost_day,</if>
+            <if test="state != null">state,</if>
+            <if test="auditBy != null">audit_by,</if>
+            <if test="reason != null">reason,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="pCode != null">#{pCode},</if>
+            <if test="code != null">#{code},</if>
+            <if test="num != null">#{num},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="costDay != null">#{costDay},</if>
+            <if test="realCostDay != null">#{realCostDay},</if>
+            <if test="state != null">#{state},</if>
+            <if test="auditBy != null">#{auditBy},</if>
+            <if test="reason != null">#{reason},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateErpProduceRecord" parameterType="ErpProduceRecord">
+        update erp_produce_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pCode != null">p_code = #{pCode},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="costDay != null">cost_day = #{costDay},</if>
+            <if test="realCostDay != null">real_cost_day = #{realCostDay},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="auditBy != null">audit_by = #{auditBy},</if>
+            <if test="reason != null">reason = #{reason},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteErpProduceRecordById" parameterType="Long">
+        delete from erp_produce_record where id = #{id}
+    </delete>
+
+    <delete id="deleteErpProduceRecordByIds" parameterType="String">
+        delete from erp_produce_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

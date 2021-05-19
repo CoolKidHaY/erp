@@ -44,10 +44,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 	@Override
 	public List<Menu> selectMenu() {
 		QueryWrapper<Menu> queryWrapper = new QueryWrapper<Menu>()
-				.eq("type", Constants.MENU_TYPE_M)
-				.or()
-				.eq("type", Constants.MENU_TYPE_C);
-		queryWrapper.eq("delete_flag", Constants.DELETE_FLAG_EXIST).orderByAsc("id");
+				.eq("visible", 0).orderByAsc("id")
+				.and(wrapper -> wrapper.eq("type", Constants.MENU_TYPE_M).or().eq("type", Constants.MENU_TYPE_C));
 		List<Menu> menus = baseMapper.selectList(queryWrapper);
 		return menus;
 

@@ -6,7 +6,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="ErpProvider" id="ErpProviderResult">
         <result property="id"    column="id"    />
-        <result property="money"    column="money"    />
         <result property="name"    column="name"    />
         <result property="contacts"    column="contacts"    />
         <result property="phoneNum"    column="phone_num"    />
@@ -20,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectErpProviderVo">
-        select id, money, name, contacts, phone_num, email, remark, type, fax, telephone, address, delete_flag from erp_provider
+        select id, `name`, contacts, phone_num, email, remark, `type`, fax, telephone, address, delete_flag from erp_provider
     </sql>
 
     <select id="selectErpProviderList" parameterType="ErpProvider" resultMap="ErpProviderResult">

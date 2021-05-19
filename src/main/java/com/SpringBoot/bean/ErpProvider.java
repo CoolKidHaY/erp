@@ -30,8 +30,6 @@ public class ErpProvider
     @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
 
-    private BigDecimal money;
-
     /** 供应商名称 */
 //    @Excel(name = "供应商名称")
     private String name;
