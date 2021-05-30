@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:include="include :: header('生产审核')"/>
+    <th:block th:include="include :: header('销售审核')"/>
 </head>
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-    <form class="form-horizontal m" id="form-unit-edit" th:object="${erpProduceRecord}">
+    <form class="form-horizontal m" id="form-unit-edit" th:object="${erpSalesRecord}">
         <input name="id" th:field="*{id}" type="hidden">
 
         <div class="form-group">
@@ -31,7 +31,7 @@
 </div>
 <th:block th:include="include :: footer"/>
 <script type="text/javascript">
-    var prefix = ctx + "business/produceRecord";
+    var prefix = ctx + "business/sales";
 
     function checkFun(val){
         if (val == 2){

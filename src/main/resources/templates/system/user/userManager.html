@@ -191,7 +191,7 @@
             var param = dtree.getNowParam("search_deptTree");
             // console.log(param);
             data.field.deptId = param.nodeId== null? null:param.nodeId;
-            // console.log(data.field.deptId);
+            console.log(data.field.deptId);
             tableIns.reload({
                 url: "/user/selectUserList",
                 where: data.field,

@@ -63,4 +63,6 @@ public class Constast {
      */
     public static final String FACTORY_INPUT = "入库";
     public static final String FACTORY_OUTPUT = "出库";
+
+    public static final String CHECKING = "CHECKING";
 }

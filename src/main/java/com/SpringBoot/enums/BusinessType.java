@@ -9,20 +9,28 @@ public enum BusinessType {
     /**
      * 其他
      */
-    OTHER,
+    OTHER ("其他"),
     /**
      * 新增
      */
-    INSERT,
+    INSERT ("新增"),
     /**
      * 修改
      */
-    UPDATE,
+    UPDATE("修改"),
     /**
      * 删除
      */
-    REMOVE,
+    REMOVE("删除"),
 
-    EXPORT
+    EXPORT("导出");
+    private final String disc;
 
+    BusinessType(String disc) {
+        this.disc = disc;
+    }
+
+    public String getDisc() {
+        return disc;
+    }
 }

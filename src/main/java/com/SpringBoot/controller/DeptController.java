@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.SpringBoot.annotation.Log;
+import com.SpringBoot.enums.BusinessType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -118,6 +120,7 @@ public class DeptController {
      */
     @RequestMapping("deleteDept")
     @ResponseBody
+    @Log(moduleName = "部门管理", businessType = BusinessType.REMOVE)
     public ResultObj deleteDept(Long id){
         try {
             int row = deptService.deleteDeptById(id);

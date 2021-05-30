@@ -91,7 +91,7 @@
                     field: 'flag',
                     title: '使用率',
                     formatter: function (value, row, index) {
-                        var flag = ((parseFloat(row.usedCapacity) / parseFloat(row.totalCapacity).toFixed(4)) * 100);
+                        var flag = ((parseFloat(row.usedCapacity) / parseFloat(row.totalCapacity)).toFixed(4) * 100);
                         return '<span class="badge badge-info">' + flag + '\%' + '</span>'
                     }
                 },

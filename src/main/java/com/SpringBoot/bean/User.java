@@ -3,6 +3,8 @@ package com.SpringBoot.bean;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -17,7 +19,8 @@ import lombok.NoArgsConstructor;
 @TableName("sys_user")
 public class User {
 
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.ASSIGN_ID)
+    @JsonSerialize(using = ToStringSerializer.class)
 	private Long id;
 
     private String name;

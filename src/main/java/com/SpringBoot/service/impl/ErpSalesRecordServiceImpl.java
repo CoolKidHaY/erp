@@ -6,28 +6,27 @@ import java.util.List;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.IdUtil;
-import com.SpringBoot.bean.ErpProduceRecord;
+import com.SpringBoot.bean.ErpSalesRecord;
 import com.SpringBoot.bean.User;
 import com.SpringBoot.common.Constast;
-import com.SpringBoot.mapper.ErpProduceRecordMapper;
-import com.SpringBoot.service.IErpProduceRecordService;
+import com.SpringBoot.mapper.ErpSalesRecordMapper;
+import com.SpringBoot.service.IErpSalesRecordService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 /**
  * 生产记录Service业务层处理
  * 
  * @author ruoyi
- * @date 2021-05-15
+ * @date 2021-05-25
  */
 @Service
-public class ErpProduceRecordServiceImpl extends ServiceImpl<ErpProduceRecordMapper, ErpProduceRecord> implements IErpProduceRecordService
+public class ErpSalesRecordServiceImpl extends ServiceImpl<ErpSalesRecordMapper, ErpSalesRecord> implements IErpSalesRecordService
 {
     @Autowired
-    private ErpProduceRecordMapper erpProduceRecordMapper;
+    private ErpSalesRecordMapper erpSalesRecordMapper;
 
     /**
      * 查询生产记录
@@ -36,7 +35,7 @@ public class ErpProduceRecordServiceImpl extends ServiceImpl<ErpProduceRecordMap
      * @return 生产记录
      */
     @Override
-    public ErpProduceRecord selectErpProduceRecordById(Long id)
+    public ErpSalesRecord selectErpSalesRecordById(Long id)
     {
         return this.getBaseMapper().selectById(id);
     }
@@ -44,53 +43,52 @@ public class ErpProduceRecordServiceImpl extends ServiceImpl<ErpProduceRecordMap
     /**
      * 查询生产记录列表
      * 
-     * @param erpProduceRecord 生产记录
+     * @param erpSalesRecord 生产记录
      * @return 生产记录
      */
     @Override
-    public List<ErpProduceRecord> selectErpProduceRecordList(ErpProduceRecord erpProduceRecord)
+    public List<ErpSalesRecord> selectErpSalesRecordList(ErpSalesRecord erpSalesRecord)
     {
-        return erpProduceRecordMapper.selectErpProduceRecordList(erpProduceRecord);
+        return erpSalesRecordMapper.selectErpSalesRecordList(erpSalesRecord);
     }
 
     /**
      * 新增生产记录
      * 
-     * @param erpProduceRecord 生产记录
+     * @param erpSalesRecord 生产记录
      * @return 结果
      */
     @Override
-    public int insertErpProduceRecord(ErpProduceRecord erpProduceRecord)
+    public int insertErpSalesRecord(ErpSalesRecord erpSalesRecord)
     {
-
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();
-        erpProduceRecord.setCreateBy(user.getName());
-        erpProduceRecord.setCreateTime(new Date());
-        // 生成材料编号
+        erpSalesRecord.setCreateBy(user.getName());
+        erpSalesRecord.setCreateTime(new Date());
+        // 销售编号
         StringBuilder sb = new StringBuilder("SC");
         String id = IdUtil.objectId();
         sb.append(id);
-        erpProduceRecord.setCode(sb.toString());
+        erpSalesRecord.setCode(sb.toString());
         // 默认待审核
-        erpProduceRecord.setState(Constast.CHECKING);
-        return this.getBaseMapper().insert(erpProduceRecord);
+        erpSalesRecord.setState(Constast.CHECKING);
+        return this.getBaseMapper().insert(erpSalesRecord);
     }
 
     /**
      * 修改生产记录
      * 
-     * @param erpProduceRecord 生产记录
+     * @param erpSalesRecord 生产记录
      * @return 结果
      */
     @Override
-    public int updateErpProduceRecord(ErpProduceRecord erpProduceRecord)
+    public int updateErpSalesRecord(ErpSalesRecord erpSalesRecord)
     {
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();
-        erpProduceRecord.setUpdateBy(user.getName());
-        erpProduceRecord.setUpdateTime(new Date());
-        return this.getBaseMapper().updateById(erpProduceRecord);
+        erpSalesRecord.setUpdateBy(user.getName());
+        erpSalesRecord.setUpdateTime(new Date());
+        return this.getBaseMapper().updateById(erpSalesRecord);
     }
 
     /**
@@ -100,7 +98,7 @@ public class ErpProduceRecordServiceImpl extends ServiceImpl<ErpProduceRecordMap
      * @return 结果
      */
     @Override
-    public int deleteErpProduceRecordByIds(String ids)
+    public int deleteErpSalesRecordByIds(String ids)
     {
         return this.getBaseMapper().deleteBatchIds(Arrays.asList(Convert.toStrArray(ids)));
     }
@@ -112,9 +110,8 @@ public class ErpProduceRecordServiceImpl extends ServiceImpl<ErpProduceRecordMap
      * @return 结果
      */
     @Override
-    public int deleteErpProduceRecordById(Long id)
+    public int deleteErpSalesRecordById(Long id)
     {
-
         return this.getBaseMapper().deleteById(id);
     }
 }

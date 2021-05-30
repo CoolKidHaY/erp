@@ -142,6 +142,18 @@ public class ErpProduceRecordController
     @PostMapping("/check")
     @ResponseBody
     public LayuiJson check(ErpProduceRecord erpProduceRecord){
-        return LayuiJson.toAjax(erpProduceRecordService.insertErpProduceRecord(erpProduceRecord));
+        return LayuiJson.toAjax(erpProduceRecordService.updateErpProduceRecord(erpProduceRecord));
     }
+
+    /**
+     * 改变状态
+     * @param erpProduceRecord
+     * @return
+     */
+    @PostMapping("/produce")
+    @ResponseBody
+    public LayuiJson produce(ErpProduceRecord erpProduceRecord){
+        return LayuiJson.toAjax(erpProduceRecordService.updateErpProduceRecord(erpProduceRecord));
+    }
+
 }

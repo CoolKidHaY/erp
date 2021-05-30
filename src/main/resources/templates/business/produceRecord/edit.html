@@ -26,6 +26,7 @@
                     <input name="costDay" th:field="*{costDay}" class="form-control" type="text">
                 </div>
             </div>
+            <input name="state" th:value="CHECKING" class="form-control" type="hidden">
         </form>
     </div>
     <th:block th:include="include :: footer" />
@@ -80,10 +81,8 @@
 
         /** 产品 */
         function setProduce(id, name) {
-            var pCode = id.split(",")[0];
-            var pName = id.split(",")[1];
-            $("#pName").prop("value", pName);
-            $("#pCode").prop("value", pCode)
+            $("#pName").prop("value", name);
+            $("#pCode").prop("value", id)
         }
     </script>
 </body>
