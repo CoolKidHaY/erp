@@ -3,6 +3,7 @@ package com.SpringBoot.service;
 import java.util.List;
 
 import com.SpringBoot.bean.ErpPurchase;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -27,7 +28,7 @@ public interface IErpPurchaseService extends IService<ErpPurchase>
      * @param erpPurchase 采购
      * @return 采购集合
      */
-    public List<ErpPurchase> selectErpPurchaseList(ErpPurchase erpPurchase);
+    public Page<ErpPurchase> selectErpPurchaseList(ErpPurchase erpPurchase);
 
     /**
      * 新增采购

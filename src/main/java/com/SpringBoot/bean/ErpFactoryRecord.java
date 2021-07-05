@@ -20,7 +20,7 @@ import lombok.Data;
  */
 @TableName("erp_factory_record")
 @Data
-public class ErpFactoryRecord
+public class ErpFactoryRecord extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

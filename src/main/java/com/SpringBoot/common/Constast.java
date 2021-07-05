@@ -1,7 +1,5 @@
 package com.SpringBoot.common;
 
-import org.springframework.stereotype.Component;
-
 public class Constast {
 
     /**
@@ -46,7 +44,7 @@ public class Constast {
     /**
      * 商品默认图片
      */
-    public static final String DEFAULT_IMG_GOODS = "/images/noDefaultImage.jpg";
+    public static final String DEFAULT_IMG_GOODS = "/static/images/noDefaultImage.jpg";
 
     /**
      * hash散列次数
@@ -56,7 +54,7 @@ public class Constast {
     /**
      * 用户默认图片
      */
-    public static final String DEFAULT_IMG_USER="/images/defaultUserTitle.jpg";
+    public static final String DEFAULT_IMG_USER= "/static/images/defaultUserTitle.jpg";
 
     /**
      * 仓库 出入库

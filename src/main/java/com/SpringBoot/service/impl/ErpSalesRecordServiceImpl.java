@@ -6,11 +6,15 @@ import java.util.List;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
+import com.SpringBoot.bean.ErpPurchase;
 import com.SpringBoot.bean.ErpSalesRecord;
 import com.SpringBoot.bean.User;
 import com.SpringBoot.common.Constast;
 import com.SpringBoot.mapper.ErpSalesRecordMapper;
 import com.SpringBoot.service.IErpSalesRecordService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -47,9 +51,16 @@ public class ErpSalesRecordServiceImpl extends ServiceImpl<ErpSalesRecordMapper,
      * @return 生产记录
      */
     @Override
-    public List<ErpSalesRecord> selectErpSalesRecordList(ErpSalesRecord erpSalesRecord)
+    public Page<ErpSalesRecord> selectErpSalesRecordList(ErpSalesRecord erpSalesRecord)
     {
-        return erpSalesRecordMapper.selectErpSalesRecordList(erpSalesRecord);
+        QueryWrapper<ErpSalesRecord> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StrUtil.isNotBlank(erpSalesRecord.getPCode()), "p_code", erpSalesRecord.getPCode())
+                .like(StrUtil.isNotBlank(erpSalesRecord.getCode()), "code", erpSalesRecord.getCode())
+                .like(StrUtil.isNotBlank(erpSalesRecord.getPName()), "p_name", erpSalesRecord.getPName())
+                .eq(StrUtil.isNotBlank(erpSalesRecord.getState()),"state", erpSalesRecord.getState())
+                .orderByDesc("create_time");
+        return this.getBaseMapper().selectPage(new Page<>(erpSalesRecord.getPageNum(), erpSalesRecord.getPageSize()), queryWrapper);
+
     }
 
     /**

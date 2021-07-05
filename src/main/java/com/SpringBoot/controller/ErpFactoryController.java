@@ -5,6 +5,7 @@ import com.SpringBoot.bean.ErpFactory;
 import com.SpringBoot.common.LayuiJson;
 import com.SpringBoot.enums.BusinessType;
 import com.SpringBoot.service.IErpFactoryService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,8 +49,8 @@ public class ErpFactoryController
     @ResponseBody
     public LayuiJson<List> list(ErpFactory erpFactory)
     {
-        List<ErpFactory> list = erpFactoryService.selectErpFactoryList(erpFactory);
-        return LayuiJson.success((long) list.size(), list);
+        Page<ErpFactory> page = erpFactoryService.selectErpFactoryList(erpFactory);
+        return LayuiJson.success(page.getTotal(), page.getRecords());
     }
 
 //    /**

@@ -41,7 +41,7 @@
                 <label class="col-sm-3 control-label">负责人：</label>
                 <div class="col-sm-8">
 <!--                    <input name="principal" th:field="*{principalName}" class="form-control" type="text">-->
-                    <select name="principalName" class="form-control select2-multiple" th:with="type=${@UserService.selectUsersByDeptId('4')}">
+                    <select name="principalName" class="form-control select2-multiple" th:with="type=${@UserService.selectUsersByDeptId('31')}">
                         <option value="">--</option>
                         <option th:each="dict : ${type}" th:text="${dict.name}" th:value="${dict.name}" th:selected="${erpFactory.principalName} == ${dict.name}"></option>
                     </select>

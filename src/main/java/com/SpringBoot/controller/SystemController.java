@@ -39,9 +39,8 @@ public class SystemController {
      * 跳转到个人资料页面
      * @return
      */
-    @RequestMapping("toUserInfo")
+    @RequestMapping("userInfo")
     public String toUserInfo(){
-
         return "system/user/userInfo";
     }
 

@@ -3,6 +3,7 @@ package com.SpringBoot.service;
 import java.util.List;
 
 import com.SpringBoot.bean.ErpProvider;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -27,7 +28,7 @@ public interface IErpProviderService extends IService<ErpProvider>
      * @param erpProvider 供应商
      * @return 供应商集合
      */
-    public List<ErpProvider> selectErpProviderList(ErpProvider erpProvider);
+    public Page<ErpProvider> selectErpProviderList(ErpProvider erpProvider);
 
     /**
      * 新增供应商

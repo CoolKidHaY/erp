@@ -3,6 +3,7 @@ package com.SpringBoot.service;
 import java.util.List;
 
 import com.SpringBoot.bean.ErpProduceRecord;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -27,7 +28,7 @@ public interface IErpProduceRecordService extends IService<ErpProduceRecord>
      * @param erpProduceRecord 生产记录
      * @return 生产记录集合
      */
-    public List<ErpProduceRecord> selectErpProduceRecordList(ErpProduceRecord erpProduceRecord);
+    public Page<ErpProduceRecord> selectErpProduceRecordList(ErpProduceRecord erpProduceRecord);
 
     /**
      * 新增生产记录

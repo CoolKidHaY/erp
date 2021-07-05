@@ -31,6 +31,8 @@ public class User {
 
     private String address;
 
+    private String phone;
+
     private Integer sex;
 
     private String remark;

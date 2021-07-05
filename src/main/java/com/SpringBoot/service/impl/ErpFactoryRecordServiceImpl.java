@@ -6,10 +6,13 @@ import java.util.List;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.StrUtil;
 import com.SpringBoot.bean.*;
 import com.SpringBoot.dto.InOrOutFactoryDto;
 import com.SpringBoot.mapper.ErpFactoryRecordMapper;
 import com.SpringBoot.service.*;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,9 +60,14 @@ public class ErpFactoryRecordServiceImpl extends ServiceImpl<ErpFactoryRecordMap
      * @return 仓库操作记录
      */
     @Override
-    public List<ErpFactoryRecord> selectErpFactoryRecordList(ErpFactoryRecord erpFactoryRecord)
+    public Page<ErpFactoryRecord> selectErpFactoryRecordList(ErpFactoryRecord erpFactoryRecord)
     {
-        return erpFactoryRecordMapper.selectErpFactoryRecordList(erpFactoryRecord);
+        QueryWrapper<ErpFactoryRecord> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StrUtil.isNotBlank(erpFactoryRecord.getCName()), "c_name", erpFactoryRecord.getCName())
+                .eq(StrUtil.isNotBlank(erpFactoryRecord.getType()), "type", erpFactoryRecord.getType())
+                .eq(StrUtil.isNotBlank(erpFactoryRecord.getState()), "state", erpFactoryRecord.getState())
+                .orderByDesc("oper_begin_time");
+        return this.getBaseMapper().selectPage(new Page<>(erpFactoryRecord.getPageNum(), erpFactoryRecord.getPageSize()), queryWrapper);
     }
 
     /**

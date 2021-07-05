@@ -1,6 +1,7 @@
 package com.SpringBoot.service;
 
 import com.SpringBoot.bean.ErpSalesRecord;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public interface IErpSalesRecordService extends IService<ErpSalesRecord>
      * @param erpSalesRecord 生产记录
      * @return 生产记录集合
      */
-    public List<ErpSalesRecord> selectErpSalesRecordList(ErpSalesRecord erpSalesRecord);
+    public Page<ErpSalesRecord> selectErpSalesRecordList(ErpSalesRecord erpSalesRecord);
 
     /**
      * 新增生产记录

@@ -19,7 +19,7 @@ import java.util.Date;
  * @date 2021-05-15
  */
 @Data
-public class ErpProduceRecord
+public class ErpProduceRecord extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

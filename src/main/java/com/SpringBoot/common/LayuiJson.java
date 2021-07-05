@@ -24,6 +24,8 @@ public class LayuiJson<T> implements Serializable{
 	 */
 	private List<T> rows;
 
+	private Object otherData;
+
 	public LayuiJson() {
 	}
 

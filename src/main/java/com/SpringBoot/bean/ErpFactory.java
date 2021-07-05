@@ -13,7 +13,7 @@ import lombok.Data;
  */
 @Data
 @TableName("erp_factory")
-public class ErpFactory
+public class ErpFactory extends BaseEntity
 {
 
     /** 主键 */

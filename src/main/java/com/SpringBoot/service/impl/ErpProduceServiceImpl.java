@@ -2,10 +2,13 @@ package com.SpringBoot.service.impl;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import com.SpringBoot.bean.ErpProduce;
 import com.SpringBoot.bean.User;
 import com.SpringBoot.mapper.ErpProduceMapper;
 import com.SpringBoot.service.IErpProduceService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -48,9 +51,14 @@ public class ErpProduceServiceImpl extends ServiceImpl<ErpProduceMapper, ErpProd
      * @return 产品
      */
     @Override
-    public List<ErpProduce> selectErpProduceList(ErpProduce erpProduce)
+    public Page<ErpProduce> selectErpProduceList(ErpProduce erpProduce)
     {
-        return erpProduceMapper.selectErpProduceList(erpProduce);
+        QueryWrapper<ErpProduce> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StrUtil.isNotBlank(erpProduce.getCode()), "code", erpProduce.getCode())
+                .like(erpProduce.getCId() != null, "c_id", erpProduce.getCId())
+                .like(StrUtil.isNotBlank(erpProduce.getName()), "name", erpProduce.getName());
+        return this.getBaseMapper().selectPage(new Page<>(erpProduce.getPageNum(), erpProduce.getPageSize()), queryWrapper);
+
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.SpringBoot.service;
 
 import com.SpringBoot.bean.ErpProduce;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public interface IErpProduceService extends IService<ErpProduce>
      * @param erpProduce 材料
      * @return 材料集合
      */
-    public List<ErpProduce> selectErpProduceList(ErpProduce erpProduce);
+    public Page<ErpProduce> selectErpProduceList(ErpProduce erpProduce);
 
     /**
      * 新增材料

@@ -5,6 +5,7 @@ import com.SpringBoot.bean.ErpProduce;
 import com.SpringBoot.common.LayuiJson;
 import com.SpringBoot.enums.BusinessType;
 import com.SpringBoot.service.IErpProduceService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -42,8 +43,8 @@ public class ErpProduceController
     @ResponseBody
     public LayuiJson<List<ErpProduce>> list(ErpProduce erpProduce)
     {
-        List<ErpProduce> list = erpProduceService.selectErpProduceList(erpProduce);
-        return LayuiJson.success((long) list.size(),list);
+        Page<ErpProduce> page = erpProduceService.selectErpProduceList(erpProduce);
+        return LayuiJson.success(page.getTotal(), page.getRecords());
     }
 
 //    /**

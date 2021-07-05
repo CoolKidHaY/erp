@@ -3,6 +3,7 @@ package com.SpringBoot.service;
 import java.util.List;
 
 import com.SpringBoot.bean.ErpFactoryMaterial;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -27,7 +28,7 @@ public interface IErpFactoryMaterialService extends IService<ErpFactoryMaterial>
      * @param erpFactoryMaterial 库存
      * @return 库存集合
      */
-    public List<ErpFactoryMaterial> selectErpFactoryMaterialList(ErpFactoryMaterial erpFactoryMaterial);
+    public Page<ErpFactoryMaterial> selectErpFactoryMaterialList(ErpFactoryMaterial erpFactoryMaterial);
 
     /**
      * 新增库存

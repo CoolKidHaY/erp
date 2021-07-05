@@ -39,7 +39,7 @@
             <div class="form-group">    
                 <label class="col-sm-3 control-label">负责人：</label>
                 <div class="col-sm-8">
-                    <select name="principalName" class="form-control select2-multiple" th:with="type=${@UserService.selectUsersByDeptId('4')}" required>
+                    <select name="principalName" class="form-control select2-multiple" th:with="type=${@UserService.selectUsersByDeptId('31')}" required>
                         <option value=""></option>
                         <option th:each="dict : ${type}" th:text="${dict.name}" th:value="${dict.name}"></option>
                     </select>

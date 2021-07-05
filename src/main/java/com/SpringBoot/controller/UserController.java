@@ -1,11 +1,15 @@
 package com.SpringBoot.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import cn.hutool.core.util.StrUtil;
 import com.SpringBoot.annotation.Log;
 import com.SpringBoot.config.ShiroConfig;
 import com.SpringBoot.enums.BusinessType;
 import com.SpringBoot.service.impl.UserServiceImpl;
+import com.SpringBoot.utils.IdWorker;
 import com.SpringBoot.vo.PwdVo;
 import com.SpringBoot.vo.UserVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import com.SpringBoot.common.LayuiJson;
 import com.SpringBoot.common.ResultObj;
 import com.SpringBoot.bean.User;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -137,6 +142,29 @@ public class UserController {
             return new ResultObj(200, "用户名不存在，或密码不正确！");
         } else
             return ResultObj.UPDATE_ERROR;
+    }
+
+    @PostMapping("/uploadFile")
+    @ResponseBody
+    public LayuiJson upload(MultipartFile file, Model mmap){
+        if (file.isEmpty()){
+            return LayuiJson.error("上传文件不能为空！");
+        }
+        String fileName = file.getOriginalFilename();  // 文件名
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));  // 后缀名
+        String filePath = "D:\\IDEAWorkspace\\images\\"; // 上传后的路径
+        String finalName = StrUtil.uuid().replace("-", "") +  suffixName; // 新文件名
+        File dest = new File(filePath + finalName);
+        if (!dest.getParentFile().exists()) {
+            dest.getParentFile().mkdirs();
+        }
+        try {
+            file.transferTo(dest);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return LayuiJson.error("保存失败！");
+        }
+        return LayuiJson.success(finalName);
     }
 
 }

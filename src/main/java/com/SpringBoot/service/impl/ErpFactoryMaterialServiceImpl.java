@@ -4,10 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.StrUtil;
 import com.SpringBoot.bean.ErpFactoryMaterial;
 import com.SpringBoot.mapper.ErpFactoryMaterialMapper;
 import com.SpringBoot.service.IErpFactoryMaterialService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,9 +45,13 @@ public class ErpFactoryMaterialServiceImpl extends ServiceImpl<ErpFactoryMateria
      * @return 库存
      */
     @Override
-    public List<ErpFactoryMaterial> selectErpFactoryMaterialList(ErpFactoryMaterial erpFactoryMaterial)
+    public Page<ErpFactoryMaterial> selectErpFactoryMaterialList(ErpFactoryMaterial erpFactoryMaterial)
     {
-        return erpFactoryMaterialMapper.selectErpFactoryMaterialList(erpFactoryMaterial);
+        QueryWrapper<ErpFactoryMaterial> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StrUtil.isNotBlank(erpFactoryMaterial.getName()), "name", erpFactoryMaterial.getName())
+                .eq(erpFactoryMaterial.getType() != null, "type", erpFactoryMaterial.getType())
+                .eq(StrUtil.isNotBlank(erpFactoryMaterial.getState()), "state", erpFactoryMaterial.getState());
+        return this.getBaseMapper().selectPage(new Page<>(erpFactoryMaterial.getPageNum(), erpFactoryMaterial.getPageSize()), queryWrapper);
     }
 
     /**

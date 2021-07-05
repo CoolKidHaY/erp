@@ -9,6 +9,7 @@ import com.SpringBoot.bean.ErpSalesRecord;
 import com.SpringBoot.common.LayuiJson;
 import com.SpringBoot.enums.BusinessType;
 import com.SpringBoot.service.IErpSalesRecordService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,8 +51,8 @@ public class ErpSalesRecordController
     @ResponseBody
     public LayuiJson list(ErpSalesRecord erpSalesRecord)
     {
-        List<ErpSalesRecord> list = erpSalesRecordService.selectErpSalesRecordList(erpSalesRecord);
-        return LayuiJson.success((long) list.size(), list);
+        Page<ErpSalesRecord> page = erpSalesRecordService.selectErpSalesRecordList(erpSalesRecord);
+        return LayuiJson.success(page.getTotal(), page.getRecords());
     }
 
 //    /**

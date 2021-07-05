@@ -6,11 +6,15 @@ import java.util.List;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import com.SpringBoot.bean.ErpProduceRecord;
+import com.SpringBoot.bean.ErpProvider;
 import com.SpringBoot.bean.User;
 import com.SpringBoot.common.Constast;
 import com.SpringBoot.mapper.ErpProduceRecordMapper;
 import com.SpringBoot.service.IErpProduceRecordService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -48,9 +52,14 @@ public class ErpProduceRecordServiceImpl extends ServiceImpl<ErpProduceRecordMap
      * @return 生产记录
      */
     @Override
-    public List<ErpProduceRecord> selectErpProduceRecordList(ErpProduceRecord erpProduceRecord)
+    public Page<ErpProduceRecord> selectErpProduceRecordList(ErpProduceRecord erpProduceRecord)
     {
-        return erpProduceRecordMapper.selectErpProduceRecordList(erpProduceRecord);
+        QueryWrapper<ErpProduceRecord> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StrUtil.isNotBlank(erpProduceRecord.getCode()), "code", erpProduceRecord.getCode())
+                .like(StrUtil.isNotBlank(erpProduceRecord.getPCode()), "p_code", erpProduceRecord.getPCode())
+                .eq(StrUtil.isNotBlank(erpProduceRecord.getState()),"state", erpProduceRecord.getState())
+                .orderByDesc("create_time");
+        return this.getBaseMapper().selectPage(new Page<>(erpProduceRecord.getPageNum(), erpProduceRecord.getPageSize()), queryWrapper);
     }
 
     /**

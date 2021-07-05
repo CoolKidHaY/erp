@@ -2,6 +2,7 @@ package com.SpringBoot.service;
 
 
 import com.SpringBoot.bean.ErpFactory;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public interface IErpFactoryService extends IService<ErpFactory>
      * @param erpFactory 仓库
      * @return 仓库集合
      */
-    public List<ErpFactory> selectErpFactoryList(ErpFactory erpFactory);
+    public Page<ErpFactory> selectErpFactoryList(ErpFactory erpFactory);
 
     /**
      * 新增仓库

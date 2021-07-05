@@ -21,7 +21,7 @@ import java.util.Date;
  */
 @Data
 @TableName("erp_provider")
-public class ErpProvider
+public class ErpProvider extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

@@ -21,7 +21,7 @@ import lombok.Data;
  * @date 2021-04-28
  */
 @Data
-public class ErpPurchase
+public class ErpPurchase extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

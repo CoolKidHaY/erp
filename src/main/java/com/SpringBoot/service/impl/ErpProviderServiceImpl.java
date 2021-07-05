@@ -5,10 +5,13 @@ import java.util.Date;
 import java.util.List;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.StrUtil;
 import com.SpringBoot.bean.ErpProvider;
 import com.SpringBoot.bean.User;
 import com.SpringBoot.mapper.ErpProviderMapper;
 import com.SpringBoot.service.IErpProviderService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -46,9 +49,16 @@ public class ErpProviderServiceImpl extends ServiceImpl<ErpProviderMapper, ErpPr
      * @return 供应商
      */
     @Override
-    public List<ErpProvider> selectErpProviderList(ErpProvider erpProvider)
+    public Page<ErpProvider> selectErpProviderList(ErpProvider erpProvider)
     {
-        return erpProviderMapper.selectErpProviderList(erpProvider);
+        QueryWrapper<ErpProvider> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StrUtil.isNotBlank(erpProvider.getName()), "name", erpProvider.getName())
+                .like(StrUtil.isNotBlank(erpProvider.getContacts()), "contacts", erpProvider.getContacts())
+                .like(StrUtil.isNotBlank(erpProvider.getPhoneNum()), "phone_num", erpProvider.getPhoneNum())
+                .like(StrUtil.isNotBlank(erpProvider.getAddress()), "address", erpProvider.getAddress())
+                .eq("type", erpProvider.getType())
+                .orderByDesc("create_time");
+        return this.getBaseMapper().selectPage(new Page<>(erpProvider.getPageNum(), erpProvider.getPageSize()), queryWrapper);
     }
 
     /**

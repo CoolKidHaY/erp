@@ -9,6 +9,7 @@ import com.SpringBoot.common.LayuiJson;
 import com.SpringBoot.enums.BusinessType;
 import com.SpringBoot.service.IErpFactoryMaterialService;
 import com.SpringBoot.service.IErpMaterialService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,8 +53,8 @@ public class ErpMaterialController
     @ResponseBody
     public LayuiJson<List<ErpMaterial>> list(ErpMaterial erpMaterial)
     {
-        List<ErpMaterial> list = erpMaterialService.selectErpMaterialList(erpMaterial);
-        return LayuiJson.success((long) list.size(),list);
+        Page<ErpMaterial> page = erpMaterialService.selectErpMaterialList(erpMaterial);
+        return LayuiJson.success(page.getTotal(),page.getRecords());
     }
 
 //    /**

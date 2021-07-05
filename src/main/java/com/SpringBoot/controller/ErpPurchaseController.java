@@ -10,6 +10,7 @@ import com.SpringBoot.common.LayuiJson;
 import com.SpringBoot.enums.BusinessType;
 import com.SpringBoot.service.IErpFactoryService;
 import com.SpringBoot.service.IErpPurchaseService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,8 +51,8 @@ public class ErpPurchaseController
     @ResponseBody
     public LayuiJson list(ErpPurchase erpPurchase)
     {
-        List<ErpPurchase> list = erpPurchaseService.selectErpPurchaseList(erpPurchase);
-        return LayuiJson.success((long) list.size(), list);
+        Page<ErpPurchase> page = erpPurchaseService.selectErpPurchaseList(erpPurchase);
+        return LayuiJson.success(page.getTotal(), page.getRecords());
     }
 
 //    /**

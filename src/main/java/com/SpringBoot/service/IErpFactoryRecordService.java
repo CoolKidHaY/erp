@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.SpringBoot.bean.ErpFactoryRecord;
 import com.SpringBoot.dto.InOrOutFactoryDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -28,7 +29,7 @@ public interface IErpFactoryRecordService extends IService<ErpFactoryRecord>
      * @param erpFactoryRecord 仓库操作记录
      * @return 仓库操作记录集合
      */
-    public List<ErpFactoryRecord> selectErpFactoryRecordList(ErpFactoryRecord erpFactoryRecord);
+    public Page<ErpFactoryRecord> selectErpFactoryRecordList(ErpFactoryRecord erpFactoryRecord);
 
     /**
      * 新增仓库操作记录

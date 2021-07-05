@@ -23,7 +23,7 @@ import java.util.Date;
 
 @Data
 @TableName("erp_material")
-public class ErpMaterial implements Serializable
+public class ErpMaterial extends BaseEntity implements Serializable
 {
     private static final long serialVersionUID = 1L;
 

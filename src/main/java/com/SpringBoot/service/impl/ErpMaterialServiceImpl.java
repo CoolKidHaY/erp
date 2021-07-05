@@ -6,10 +6,13 @@ import java.util.List;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import com.SpringBoot.bean.ErpMaterial;
 import com.SpringBoot.bean.User;
 import com.SpringBoot.mapper.ErpMaterialMapper;
 import com.SpringBoot.service.IErpMaterialService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -48,9 +51,13 @@ public class ErpMaterialServiceImpl extends ServiceImpl<ErpMaterialMapper, ErpMa
      * @return 材料
      */
     @Override
-    public List<ErpMaterial> selectErpMaterialList(ErpMaterial erpMaterial)
+    public Page<ErpMaterial> selectErpMaterialList(ErpMaterial erpMaterial)
     {
-        return erpMaterialMapper.selectErpMaterialList(erpMaterial);
+        QueryWrapper<ErpMaterial> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StrUtil.isNotBlank(erpMaterial.getCode()), "code", erpMaterial.getId())
+                .eq(erpMaterial.getCId() != null, "c_id", erpMaterial.getCId())
+                .like(StrUtil.isNotBlank(erpMaterial.getName()), "name", erpMaterial.getName());
+        return this.getBaseMapper().selectPage(new Page<>(erpMaterial.getPageNum(), erpMaterial.getPageSize()), queryWrapper);
     }
 
     /**

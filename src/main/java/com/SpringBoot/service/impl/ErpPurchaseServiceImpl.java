@@ -7,12 +7,14 @@ import java.util.List;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import com.SpringBoot.bean.*;
 import com.SpringBoot.common.Constast;
 import com.SpringBoot.mapper.ErpPurchaseMapper;
 import com.SpringBoot.service.*;
 import com.SpringBoot.utils.InStockUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -68,9 +70,13 @@ public class ErpPurchaseServiceImpl extends ServiceImpl<ErpPurchaseMapper, ErpPu
      * @return 采购
      */
     @Override
-    public List<ErpPurchase> selectErpPurchaseList(ErpPurchase erpPurchase)
+    public Page<ErpPurchase> selectErpPurchaseList(ErpPurchase erpPurchase)
     {
-        return erpPurchaseMapper.selectErpPurchaseList(erpPurchase);
+        QueryWrapper<ErpPurchase> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StrUtil.isNotBlank(erpPurchase.getOrderNo()), "order_no", erpPurchase.getOrderNo())
+                .eq(StrUtil.isNotBlank(erpPurchase.getState()),"state", erpPurchase.getState())
+                .orderByDesc("create_time");
+        return this.getBaseMapper().selectPage(new Page<>(erpPurchase.getPageNum(), erpPurchase.getPageSize()), queryWrapper);
     }
 
     /**

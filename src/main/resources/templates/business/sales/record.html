@@ -22,25 +22,10 @@
                                 <label>产品名称：</label>
                                 <input type="text" name="pName"/>
                             </li>
-                            <li>
-                                <label>数量：</label>
-                                <input type="text" name="num"/>
-                            </li>
-                            <li>
-                                <label>单价：</label>
-                                <input type="text" name="unitPrice"/>
-                            </li>
-                            <li>
-                                <label>总价：</label>
-                                <input type="text" name="totalPrice"/>
-                            </li>
+
                             <li>
                                 <label>状态：</label>
                                 <input type="text" name="state"/>
-                            </li>
-                            <li>
-                                <label>审核人：</label>
-                                <input type="text" name="auditBy"/>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -60,9 +45,6 @@
                 </a>
                 <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()">
                     <i class="fa fa-remove"></i> 删除
-                </a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()">
-                    <i class="fa fa-download"></i> 导出
                 </a>
             </div>
             <div class="col-sm-12 select-table table-striped">

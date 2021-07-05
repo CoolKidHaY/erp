@@ -4,9 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.StrUtil;
 import com.SpringBoot.bean.ErpFactory;
+import com.SpringBoot.bean.ErpProvider;
 import com.SpringBoot.mapper.ErpFactoryMapper;
 import com.SpringBoot.service.IErpFactoryService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,9 +46,15 @@ public class ErpFactoryServiceImpl extends ServiceImpl<ErpFactoryMapper, ErpFact
      * @return 仓库
      */
     @Override
-    public List<ErpFactory> selectErpFactoryList(ErpFactory erpFactory)
+    public Page<ErpFactory> selectErpFactoryList(ErpFactory erpFactory)
     {
-        return erpFactoryMapper.selectErpFactoryList(erpFactory);
+        QueryWrapper<ErpFactory> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StrUtil.isNotBlank(erpFactory.getName()), "name", erpFactory.getName())
+                .like(StrUtil.isNotBlank(erpFactory.getAddress()), "address", erpFactory.getAddress())
+                .like(StrUtil.isNotBlank(erpFactory.getPrincipalName()), "principal_name", erpFactory.getPrincipalName())
+                .orderByAsc("sort");
+        return this.getBaseMapper().selectPage(new Page<>(erpFactory.getPageNum(), erpFactory.getPageSize()), queryWrapper);
+
     }
 
     /**
