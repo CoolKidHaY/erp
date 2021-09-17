@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("user")
 public class UserController {
+
+    @Value("${upload.file.location}")
+    private String uploadImageLocation;
 	
 	@Autowired
 	private UserServiceImpl userService;
@@ -152,7 +156,7 @@ public class UserController {
         }
         String fileName = file.getOriginalFilename();  // 文件名
         String suffixName = fileName.substring(fileName.lastIndexOf("."));  // 后缀名
-        String filePath = "D:\\IDEAWorkspace\\images\\"; // 上传后的路径
+        String filePath = uploadImageLocation; // 上传后的路径
         String finalName = StrUtil.uuid().replace("-", "") +  suffixName; // 新文件名
         File dest = new File(filePath + finalName);
         if (!dest.getParentFile().exists()) {

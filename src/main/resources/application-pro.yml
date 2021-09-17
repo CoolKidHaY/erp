@@ -78,3 +78,7 @@ mybatis-plus:
   type-aliases-package: com.SpringBoot.bean
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+upload:
+  file:
+    location: /users/jenkins/upload
