@@ -80,4 +80,4 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 upload:
   file:
-    location: D:\\IDEAWorkspace\\images
+    location: D:\IDEAWorkspace\spring-boot-erp\src\main\resources\static\images\
