@@ -81,4 +81,4 @@ mybatis-plus:
 
 upload:
   file:
-    location: /usr/local/project/erp/upload
+    location: /usr/local/project/erp/upload/
